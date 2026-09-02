@@ -29,6 +29,7 @@ class Settings(BaseSettings):
 
     # Embeddings
     EMBEDDING_MODEL: str = "BAAI/bge-small-en-v1.5"
+    RERANKER_MODEL: str = "BAAI/bge-reranker-base"
 
     # Authentication
     SECRET_KEY: str = "change-this-secret-key"
