@@ -28,7 +28,7 @@ def rerank(
         top_k: Number of documents to return.
 
     Returns:
-        Top-ranked documents.
+        Top-ranked documents as dictionaries.
     """
 
     if not query.strip() or not documents:
@@ -38,7 +38,7 @@ def rerank(
     pairs = []
 
     for document in documents:
-        payload = document.get("payload", {})
+        payload = document.payload or {}
 
         text = payload.get("text", "")
 
@@ -56,18 +56,21 @@ def rerank(
         pairs
     )
 
-    # Attach scores
+    # Convert Qdrant documents into dictionaries
     ranked_documents = []
 
     for document, score in zip(
         documents,
         scores,
     ):
-        ranked_document = document.copy()
+        payload = document.payload or {}
 
-        ranked_document["rerank_score"] = float(
-            score
-        )
+        ranked_document = {
+            "id": str(document.id),
+            "score": float(document.score),
+            "rerank_score": float(score),
+            "payload": payload,
+        }
 
         ranked_documents.append(
             ranked_document

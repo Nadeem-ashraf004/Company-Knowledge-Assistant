@@ -23,9 +23,9 @@ class Settings(BaseSettings):
     QDRANT_COLLECTION_NAME: str = "company_documents"
 
     # LLM
-    LLM_PROVIDER: str = "openai"
-    LLM_MODEL: str = "gpt-4o-mini"
-    OPENAI_API_KEY: str | None = None
+    LLM_PROVIDER: str = "gemini"
+    LLM_MODEL: str = "gemini-2.5-flash"
+    GEMINI_API_KEY: str | None = None
 
     # Embeddings
     EMBEDDING_MODEL: str = "BAAI/bge-small-en-v1.5"
