@@ -14,7 +14,7 @@ def create_document(
     file_path: str | None = None,
     description: str | None = None,
 ) -> Document:
-    """Create a document record."""
+    """Create a document record in PostgreSQL."""
 
     document = Document(
         user_id=user_id,
@@ -23,6 +23,7 @@ def create_document(
         file_path=file_path,
         description=description,
         status=DocumentStatus.PENDING,
+        chunk_count=0,
     )
 
     db.add(document)
@@ -32,7 +33,7 @@ def create_document(
     return document
 
 
-def get_document_by_id(
+def get_document(
     db: Session,
     document_id: UUID,
     user_id: UUID,
@@ -46,6 +47,18 @@ def get_document_by_id(
 
     return db.scalar(statement)
 
+def get_document_by_id(
+    db: Session,
+    document_id: UUID,
+) -> Document | None:
+    """Get a document by its ID."""
+
+    statement = select(Document).where(
+        Document.id == document_id,
+    )
+
+    return db.scalar(statement)
+#get user dcoument
 
 def get_user_documents(
     db: Session,
@@ -68,7 +81,7 @@ def update_document_status(
     status: DocumentStatus,
     chunk_count: int | None = None,
 ) -> Document:
-    """Update document processing status."""
+    """Update document processing status and chunk count."""
 
     document.status = status
 
@@ -85,7 +98,7 @@ def delete_document(
     db: Session,
     document: Document,
 ) -> None:
-    """Delete a document."""
+    """Delete a document record from PostgreSQL."""
 
     db.delete(document)
     db.commit()

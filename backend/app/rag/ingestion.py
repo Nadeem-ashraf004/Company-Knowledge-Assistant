@@ -16,20 +16,10 @@ def ingest_document(
     file_path: str,
     user_id: UUID,
     document_id: UUID | None = None,
+    original_filename: str | None = None,
 ) -> dict:
     """
-    Ingest a document into the RAG system.
-
-    Pipeline:
-        Load
-          ↓
-        Clean
-          ↓
-        Chunk
-          ↓
-        Embed
-          ↓
-        Store in Qdrant
+    Load, clean, chunk, embed, and store a document in Qdrant.
     """
 
     path = Path(file_path)
@@ -39,20 +29,12 @@ def ingest_document(
             f"Document not found: {file_path}"
         )
 
-    # --------------------------------------------------
-    # 1. Load document
-    # --------------------------------------------------
-
     raw_text = load_document(file_path)
 
     if not raw_text.strip():
         raise ValueError(
             "Document contains no readable text."
         )
-
-    # --------------------------------------------------
-    # 2. Clean text
-    # --------------------------------------------------
 
     cleaned_text = clean_text(raw_text)
 
@@ -61,20 +43,12 @@ def ingest_document(
             "Document contains no usable text after cleaning."
         )
 
-    # --------------------------------------------------
-    # 3. Create chunks
-    # --------------------------------------------------
-
     chunks = create_chunks(cleaned_text)
 
     if not chunks:
         raise ValueError(
             "No chunks were created from the document."
         )
-
-    # --------------------------------------------------
-    # 4. Generate embeddings
-    # --------------------------------------------------
 
     texts = [
         chunk.text
@@ -89,17 +63,9 @@ def ingest_document(
             "number of chunks."
         )
 
-    # --------------------------------------------------
-    # 5. Make sure Qdrant collection exists
-    # --------------------------------------------------
-
     vector_size = len(embeddings[0])
 
     ensure_collection(vector_size)
-
-    # --------------------------------------------------
-    # 6. Create Qdrant points
-    # --------------------------------------------------
 
     document_id = document_id or uuid4()
 
@@ -117,7 +83,8 @@ def ingest_document(
             "chunk_id": chunk.chunk_id,
             "chunk_index": chunk.chunk_index,
             "text": chunk.text,
-            "file_name": path.name,
+            "file_name": original_filename or path.name,
+            "page": chunk.page,
         }
 
         point = create_point(
@@ -127,10 +94,6 @@ def ingest_document(
         )
 
         points.append(point)
-
-    # --------------------------------------------------
-    # 7. Store vectors in Qdrant
-    # --------------------------------------------------
 
     upsert_vectors(points)
 

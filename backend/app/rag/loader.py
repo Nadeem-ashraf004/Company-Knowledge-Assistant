@@ -14,17 +14,22 @@ SUPPORTED_EXTENSIONS = {
 
 
 def load_pdf(file_path: str) -> str:
-    """Extract text from a PDF file."""
+    """Extract PDF text while preserving page boundaries."""
 
     reader = PdfReader(file_path)
 
     pages = []
 
-    for page in reader.pages:
+    for page_number, page in enumerate(
+        reader.pages,
+        start=1,
+    ):
         text = page.extract_text() or ""
 
         if text.strip():
-            pages.append(text)
+            pages.append(
+                f"\n[[PAGE:{page_number}]]\n{text}"
+            )
 
     return "\n\n".join(pages)
 

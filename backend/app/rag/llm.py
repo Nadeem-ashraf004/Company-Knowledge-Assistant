@@ -1,6 +1,7 @@
 from functools import lru_cache
 
 from google import genai
+from google.genai import types
 
 from app.core.config import settings
 
@@ -24,10 +25,10 @@ def get_llm_client() -> genai.Client:
 def generate_answer(
     prompt: str,
     temperature: float = 0.2,
-    max_tokens: int = 500,
+    max_tokens: int = 1000,
 ) -> str:
     """
-    Generate an answer using Gemini.
+    Generate a grounded answer using Gemini.
     """
 
     client = get_llm_client()
@@ -35,15 +36,21 @@ def generate_answer(
     response = client.models.generate_content(
         model=settings.LLM_MODEL,
         contents=prompt,
-        config={
-            "temperature": temperature,
-            "max_output_tokens": max_tokens,
-        },
+        config=types.GenerateContentConfig(
+            temperature=temperature,
+            max_output_tokens=max_tokens,
+        ),
     )
 
     if not response.text:
         raise RuntimeError(
             "Gemini returned an empty response."
         )
+
+    print("[LLM] Response:", repr(response.text))
+
+    if response.candidates:
+        candidate = response.candidates[0]
+        print("[LLM] Finish reason:", candidate.finish_reason)
 
     return response.text.strip()
