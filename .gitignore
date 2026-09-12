@@ -90,7 +90,7 @@ huggingface_cache/
 # ==========================================
 
 test_documents/
-
+upload/
 # ==========================================
 # Build / Distribution
 # ==========================================
@@ -107,4 +107,3 @@ node_modules/
 npm-debug.log*
 yarn-debug.log*
 pnpm-debug.log*
-upload

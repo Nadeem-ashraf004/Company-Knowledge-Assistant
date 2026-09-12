@@ -5,6 +5,7 @@ from app.rag.retriever import retrieve
 from app.rag.reranker import rerank
 from app.rag.prompt import build_rag_prompt
 from app.rag.llm import generate_answer
+from app.rag.intent_detector import detect_intent
 
 
 def run_rag_pipeline(
@@ -14,26 +15,34 @@ def run_rag_pipeline(
     retrieval_top_k: int = 10,
     rerank_top_k: int = 5,
 ):
-    """
-    Run the complete RAG pipeline.
-
-    Flow:
-        Query rewriting
-            ↓
-        Retrieval
-            ↓
-        Reranking
-            ↓
-        Prompt construction
-            ↓
-        Gemini generation
-    """
-
-    # 1. Rewrite the user's query
-    rewritten_query = rewrite_query(
-        query=query,
-        conversation_history=conversation_history,
+    intent = detect_intent(
+    query=query,
+    conversation_history=conversation_history,
     )
+
+    if intent == "STANDALONE":
+            rewritten_query = query
+
+    elif intent == "FOLLOW_UP":
+            rewritten_query = rewrite_query(
+            query=query,
+            conversation_history=conversation_history,
+    )
+
+    elif intent == "TOPIC_SWITCH":
+            rewritten_query = query
+
+    elif intent == "AMBIGUOUS":
+           rewritten_query = rewrite_query(
+           query=query,
+           conversation_history=conversation_history,
+    )
+
+    else:
+       rewritten_query = query
+
+    print("[PIPELINE] Intent:", intent)
+    print("[PIPELINE] Search query:", rewritten_query)
 
     # 2. Retrieve relevant documents
     retrieved_documents = retrieve(

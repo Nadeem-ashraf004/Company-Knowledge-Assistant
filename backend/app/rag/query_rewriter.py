@@ -58,15 +58,13 @@ Conversation:
 user: What were Apple's total net sales for the three months ended June 27, 2026?
 assistant: Apple's total net sales were $109,417 million.
 
-Latest user question:
+Latest question:
 What about the previous year?
 
-Output:
+Standalone query:
 What were Apple's total net sales for the three months ended June 28, 2025?
 
-Now rewrite this question:
-
-{query}
+Now rewrite the latest question.
 
 Output only the standalone search query:
 """.strip()
@@ -75,7 +73,7 @@ Output only the standalone search query:
     rewritten_query = generate_answer(
         prompt=rewrite_prompt,
         temperature=0.0,
-        max_tokens=300,
+        max_tokens=500,
     )
 
     rewritten_query = rewritten_query.strip()
