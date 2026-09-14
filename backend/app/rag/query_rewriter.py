@@ -14,13 +14,13 @@ def rewrite_query(
     if not query:
         return query
 
-    # CHANGED: Do not rewrite standalone queries when there is no history.
+    # No conversation means there is nothing to rewrite.
     if not conversation_history:
         return query
 
     history_parts = []
 
-    # CHANGED: Use only the most recent messages to keep the rewrite context focused.
+    # Use recent conversation context.
     for message in conversation_history[-6:]:
         role = message.get("role", "")
         content = message.get("content", "").strip()
@@ -34,7 +34,10 @@ def rewrite_query(
     history = "\n".join(history_parts)
 
     rewrite_prompt = f"""
-Rewrite the latest user question into ONE standalone search query.
+You are a query rewriting component for a conversational RAG system.
+
+Your ONLY task is to convert the latest user question into a
+complete standalone search query.
 
 Conversation:
 {history}
@@ -42,15 +45,38 @@ Conversation:
 Latest user question:
 {query}
 
-Rules:
-- Resolve references such as "it", "they", "this", "that", "previous year", and "same company".
-- Keep the original meaning.
-- Use information from the conversation when resolving references.
-- Do not answer the question.
-- Do not explain anything.
-- Return ONLY the rewritten search query.
-- The output must be a complete question or search query.
-- Never return an incomplete sentence.
+Follow these rules strictly:
+
+1. Preserve the exact subject, entity, company, person, product,
+   document, metric, or topic from the conversation when the latest
+   question refers to it.
+
+2. Resolve references such as:
+   "it", "they", "this", "that", "same", "previous year",
+   "next year", "last year", "how much", "how many", and
+   "what about".
+
+3. If the user asks about a previous or next year, determine the
+   correct year from the conversation and include the actual year
+   in the rewritten query.
+
+4. Do NOT replace specific terms with vague terms.
+   For example, do not change "Apple total net sales" into
+   "results" or "performance".
+
+5. Preserve important details such as dates, numbers, metrics,
+   names, and time periods.
+
+6. Keep the original meaning of the user's question.
+
+7. Do NOT answer the question.
+
+8. Do NOT explain your reasoning.
+
+9. Return ONLY ONE standalone search query.
+
+10. The rewritten query must contain enough information to be
+    understood without the conversation.
 
 Example:
 
@@ -58,22 +84,33 @@ Conversation:
 user: What were Apple's total net sales for the three months ended June 27, 2026?
 assistant: Apple's total net sales were $109,417 million.
 
-Latest question:
+Latest user question:
 What about the previous year?
 
-Standalone query:
+Correct standalone query:
 What were Apple's total net sales for the three months ended June 28, 2025?
 
-Now rewrite the latest question.
+Another example:
 
-Output only the standalone search query:
+Conversation:
+user: What is Apple's revenue for 2026?
+assistant: Apple's revenue was ...
+
+Latest user question:
+What about 2025?
+
+Correct standalone query:
+What was Apple's revenue for 2025?
+
+Now rewrite the latest user question.
+
+Return ONLY the standalone search query.
 """.strip()
 
-    # CHANGED: Allow enough output tokens for a complete standalone query.
     rewritten_query = generate_answer(
         prompt=rewrite_prompt,
         temperature=0.0,
-        max_tokens=500,
+        max_tokens=1000,
     )
 
     rewritten_query = rewritten_query.strip()

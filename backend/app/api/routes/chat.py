@@ -55,15 +55,9 @@ async def chat(
                     detail="Conversation not found.",
                 )
 
-        # Save the user's message.
-        add_message(
-            db=db,
-            conversation_id=conversation.id,
-            role=MessageRole.USER,
-            content=query,
-        )
-
-        # Load previous conversation messages.
+        # CHANGED:
+        # Load the existing conversation history BEFORE
+        # saving the current user question.
         messages = get_conversation_messages(
             db=db,
             conversation_id=conversation.id,
@@ -71,7 +65,7 @@ async def chat(
 
         conversation_history = [
             {
-                "role":(
+                "role": (
                     message.role.value
                     if hasattr(message.role, "value")
                     else message.role
@@ -81,7 +75,15 @@ async def chat(
             for message in messages
         ]
 
-        # Run the RAG pipeline.
+        # Save the current user's message.
+        add_message(
+            db=db,
+            conversation_id=conversation.id,
+            role=MessageRole.USER,
+            content=query,
+        )
+
+        # Run the RAG pipeline using the previous conversation history.
         result = run_rag_pipeline(
             query=query,
             user_id=user_id,

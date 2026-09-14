@@ -33,10 +33,14 @@ def run_rag_pipeline(
             rewritten_query = query
 
     elif intent == "AMBIGUOUS":
-           rewritten_query = rewrite_query(
-           query=query,
-           conversation_history=conversation_history,
-    )
+           # Do not guess what the user means.
+        return {
+            "query": query,
+            "answer": "Could you please clarify what you would like to know?",
+            "documents": [],
+            "intent": intent,
+        }
+    
 
     else:
        rewritten_query = query
