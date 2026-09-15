@@ -7,7 +7,6 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.database import Base
 
-
 class Conversation(Base):
     __tablename__ = "conversations"
 
