@@ -24,3 +24,26 @@ def delete_record(
 
     db.delete(record)
     db.commit()
+
+
+
+def get_user_by_email(
+        db: Session,
+        email: str,
+) -> User | None:
+    # fined use by email
+    statement =  select(User).where(User.email == email)
+
+    return db.scalar(statement)
+
+def get_user_by_id(
+        db : Session,
+        user_id : UUID,
+
+)-> User | None :
+    # find user by id
+    
+    statement = select(User).where(user_id == User.id)
+
+
+    return db.scalar(statement)   

@@ -3,13 +3,14 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.routes import auth, documents, chat, health
 
-
+from app.db.database import init_db
 app = FastAPI(
     title="Company Knowledge Assistant",
     description="Production-grade RAG-based company knowledge assistant",
     version="1.0.0",
 )
 
+init_db()
 
 # CORS
 app.add_middleware(

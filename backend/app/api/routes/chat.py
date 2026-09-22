@@ -3,8 +3,11 @@ from uuid import UUID
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
+from app.core.dependencies import get_current_user
+
 from app.db.database import get_db
 from app.models.message import MessageRole
+from app.models.user import User
 from app.services.chat_service import (
     add_message,
     create_conversation,
@@ -19,7 +22,7 @@ router = APIRouter()
 @router.post("/")
 async def chat(
     query: str,
-    user_id: UUID,
+    current_user: User = Depends(get_current_user),
     conversation_id: UUID | None = None,
     db: Session = Depends(get_db),
 ):
@@ -33,6 +36,9 @@ async def chat(
             status_code=400,
             detail="Query cannot be empty.",
         )
+
+    #the authenticated user id come from the jwt
+    user_id = current_user.id
 
     try:
         # Create a new conversation if one was not provided.
