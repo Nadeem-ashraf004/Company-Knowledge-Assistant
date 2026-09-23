@@ -1,5 +1,6 @@
 from fastapi import APIRouter ,Depends , HTTPException , status
 from sqlalchemy.orm import Session
+from app.schemas.user import UserResponse
 
 
 from app.core.security import (
@@ -12,24 +13,24 @@ from app.db.crud import create_record, get_user_by_email
 
 from app.db.database import get_db
 
-from app.models.user import User, user
+from app.models.user import User
 
 from app.schemas.user import(
     TokenResponse,
     UserCreate,
     UserLogin,
-    UserRespone
+    UserResponse,
 )
 
 
 router = APIRouter()
 
 
-@router.post("/register" , response_model=UserRespone , status_code=status.HTTP_210_CREATED)
+@router.post("/register" , response_model=UserResponse , status_code=status.HTTP_201_CREATED)
 async def register(
     user_data = UserCreate,
     db:Session = Depends(get_db)
-)->UserRespone:
+)->UserResponse:
     # register a new user
     # check wether the user already reistered
     existing_user = get_user_by_email(db, email = user_data.email)
@@ -63,7 +64,7 @@ async def register(
 async def login(
     user_data : UserLogin,
     db: Session = Depends(get_db),
-) -> TokenRespones:
+) -> TokenResponse:
     # authentication  a user  and return a JWT token.
     # find the user by email
     user = get_user_by_email(

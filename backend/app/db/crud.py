@@ -1,5 +1,6 @@
 from typing import Any
-
+from uuid import UUID
+from huggingface_hub import User
 from sqlalchemy.orm import Session
 
 
@@ -39,11 +40,11 @@ def get_user_by_email(
 def get_user_by_id(
         db : Session,
         user_id : UUID,
-
-)-> User | None :
+) -> User | None :
     # find user by id
-    
+
     statement = select(User).where(user_id == User.id)
+
 
 
     return db.scalar(statement)   

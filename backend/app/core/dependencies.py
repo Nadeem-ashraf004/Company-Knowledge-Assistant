@@ -1,5 +1,5 @@
 from uuid import UUID
-from fastapi import Depends , HTTPEXception, HTTPException , status
+from fastapi import Depends , HTTPException, HTTPException , status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from sqlalchemy.orm import Session
 from app.core.security import decode_access_token, verify_password
@@ -30,7 +30,7 @@ def get_current_user(
     # extract the user id form the payload
     subject = payload.get("sub")
     if not subject:
-        raise HTTPEXception(
+        raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="incalid takon payload",
             headers={"WWW-AUthentication ": "Bearer"},
