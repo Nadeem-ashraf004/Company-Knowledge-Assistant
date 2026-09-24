@@ -1,8 +1,5 @@
 from fastapi import APIRouter ,Depends , HTTPException , status
 from sqlalchemy.orm import Session
-from app.schemas.user import UserResponse
-
-
 from app.core.security import (
     create_access_token,
     hash_password,
@@ -28,7 +25,7 @@ router = APIRouter()
 
 @router.post("/register" , response_model=UserResponse , status_code=status.HTTP_201_CREATED)
 async def register(
-    user_data = UserCreate,
+    user_data : UserCreate,
     db:Session = Depends(get_db)
 )->UserResponse:
     # register a new user
@@ -43,6 +40,7 @@ async def register(
     hashed_password = hash_password(user_data.password)
     #create a databsase 
     user=User(
+        full_name = user_data.full_name,
         email = user_data.email,
         password_hash = hashed_password,
         is_active = True

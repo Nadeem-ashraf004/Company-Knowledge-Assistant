@@ -1,7 +1,8 @@
 from typing import Any
 from uuid import UUID
-from huggingface_hub import User
-from sqlalchemy.orm import Session
+from app.models.user import User
+from sqlalchemy.orm import Session 
+from sqlalchemy import select
 
 
 def create_record(

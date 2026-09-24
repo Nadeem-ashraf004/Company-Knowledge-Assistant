@@ -2,16 +2,11 @@ from datetime import datetime, timedelta, timezone
 
 from jose import JWTError, jwt
 from passlib.context import CryptContext
-
+from pwdlib import PasswordHash
 from app.core.config import settings
 
 
-# Password hashing
-pwd_context = CryptContext(
-    schemes=["bcrypt"],
-    deprecated="auto",
-)
-
+password_hash = PasswordHash.recommended()
 
 # JWT configuration
 ALGORITHM = "HS256"
@@ -19,7 +14,7 @@ ALGORITHM = "HS256"
 
 def hash_password(password: str) -> str:
     """Hash a plain-text password."""
-    return pwd_context.hash(password)
+    return password_hash.hash(password)
 
 
 def verify_password(
@@ -27,7 +22,7 @@ def verify_password(
     hashed_password: str,
 ) -> bool:
     """Verify a password against its hash."""
-    return pwd_context.verify(
+    return password_hash.verify(
         plain_password,
         hashed_password,
     )
