@@ -61,7 +61,7 @@ class UserResponse(BaseModel):
 
     id : UUID
     full_name : str
-    emial : EmailStr
+    email : EmailStr
     is_active: bool
     created_at: datetime
 

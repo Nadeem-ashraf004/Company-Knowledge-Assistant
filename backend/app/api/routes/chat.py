@@ -18,7 +18,6 @@ from app.rag.pipeline import run_rag_pipeline
 
 router = APIRouter()
 
-
 @router.post("/")
 async def chat(
     query: str,
