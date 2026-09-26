@@ -18,14 +18,16 @@ def get_current_user(
 ) -> User:
     # return the current authentication user .
     token = credentials.credentials
+    print("debug the token " , bool(token))
+    print("debug token length " ,len(token))
     # decode the token and get the user id
     payload = decode_access_token(token)
 
     if not payload:
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHOROZED,
+            status_code=status.HTTP_401_UNAUTHORIZED,
             detail="invalid or expired token",
-            header={"WWW-Authenticate":"Bearer"},
+            headers={"WWW-Authenticate":"Bearer"},
         )
     # extract the user id form the payload
     subject = payload.get("sub")

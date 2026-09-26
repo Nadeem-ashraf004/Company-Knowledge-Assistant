@@ -3,9 +3,10 @@ from uuid import UUID
 
 from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile
 from sqlalchemy.orm import Session
-
+from app.core.dependencies import get_current_user
 from app.db.database import get_db
 from app.models.document import DocumentStatus
+from app.models.user import User
 from app.rag.ingestion import ingest_document
 from app.services.document_service import (
     create_document,
@@ -14,7 +15,7 @@ from app.services.document_service import (
     update_document_status,
 )
 
-router = APIRouter()
+router = APIRouter()    
 
 UPLOAD_DIR = Path("uploads")
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
@@ -29,9 +30,9 @@ ALLOWED_EXTENSIONS = {
 
 @router.post("/upload")
 async def upload_document(
-    user_id: UUID = Form(...),
     file: UploadFile = File(...),
     description: str | None = Form(None),
+    current_user : User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
     """
@@ -54,6 +55,7 @@ async def upload_document(
                 f"Allowed types: {', '.join(sorted(ALLOWED_EXTENSIONS))}"
             ),
         )
+    user_id = current_user.id
 
     try:
         # Create a PostgreSQL document record.
@@ -134,14 +136,14 @@ async def upload_document(
 
 @router.get("/")
 async def list_documents(
-    user_id: UUID,
+    current_user:  User = Depends(get_current_user) ,
     db: Session = Depends(get_db),
 ):
     """List all documents belonging to a user."""
 
     documents = get_user_documents(
         db=db,
-        user_id=user_id,
+        user_id=current_user.id,
     )
 
     return [
@@ -160,7 +162,7 @@ async def list_documents(
 @router.get("/{document_id}")
 async def get_document_details(
     document_id: UUID,
-    user_id: UUID,
+    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
     """Get details of a user's document."""
@@ -168,7 +170,7 @@ async def get_document_details(
     document = get_document(
         db=db,
         document_id=document_id,
-        user_id=user_id,
+        user_id=current_user.id,
     )
 
     if document is None:
