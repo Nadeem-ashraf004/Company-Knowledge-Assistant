@@ -54,6 +54,24 @@ def run_rag_pipeline(
         user_id=user_id,
         top_k=retrieval_top_k,
     )
+    # DEBUG : inspect retreviel documents
+    print("\n" + "=" * 80)
+    print("Debug inspect retreiveil document")
+    print("=" * 80)
+    for rank , document in enumerate(
+         retrieved_documents,
+         start=1,
+    ):
+         payload = document.payload or  {}
+         print(f"\n[Retreivel # {rank}]")
+         print(" ID :", document.id)
+         print("Vector Score :",document.score)
+         print("document id :",payload.get("document_id"))
+         print("File :",payload.get("file_name"))
+         print("page" ,payload.get("page"))
+         print("Chunk :", payload.get("chunk_id"))
+         print("Text:", payload.get("text","")[:1000])               
+         
 
     # 3. Rerank retrieved documents
     ranked_documents = rerank(
@@ -61,6 +79,28 @@ def run_rag_pipeline(
         documents=retrieved_documents,
         top_k=rerank_top_k,
     )
+    #reranking document debug 
+    print("\n" + "=" * 80)
+    print("document reranking chack ")
+    print("=" * 80)
+
+    for rank, document in enumerate(
+         ranked_documents,
+         start =1,
+    ):
+      payload = document.get("payload", {})
+
+      print(f"\n[RERANK #{rank}]")
+      print("ID:", document.get("id"))
+      print("Vector Score:", document.get("score"))
+      print("Rerank Score:", document.get("rerank_score"))
+      print("Document ID:", payload.get("document_id"))
+      print("File:", payload.get("file_name"))
+      print("Page:", payload.get("page"))
+      print("Chunk:", payload.get("chunk_id"))
+      print("Text:", payload.get("text", "")[:1000])
+
+
 
     # 4. Build context from ranked documents
     context_parts = []
