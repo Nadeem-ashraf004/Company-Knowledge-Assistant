@@ -41,7 +41,6 @@ def run_rag_pipeline(
             "intent": intent,
         }
     
-
     else:
        rewritten_query = query
 
