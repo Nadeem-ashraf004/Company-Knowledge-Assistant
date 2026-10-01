@@ -53,6 +53,7 @@ def run_rag_pipeline(
         user_id=user_id,
         top_k=retrieval_top_k,
     )
+    
     # DEBUG : inspect retreviel documents
     print("\n" + "=" * 80)
     print("Debug inspect retreiveil document")
