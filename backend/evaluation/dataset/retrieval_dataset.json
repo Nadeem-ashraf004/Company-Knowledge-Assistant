@@ -1,0 +1,17 @@
+
+[
+  {
+    "id": "fiscal_year_001",
+    "query": "What is the company's fiscal year?",
+    "expected_answer": "The fiscal year is a 52- or 53-week period ending on the last Saturday of September.",
+    "relevant_chunk_ids": ["chunk_20"],
+    "document_note": "Apple Inc. Q3 2026 Form 10-Q"
+  },
+  {
+    "id": "fiscal_year_002",
+    "query": "When does Apple's fiscal year end?",
+    "expected_answer": "Apple's fiscal year ends on the last Saturday of September.",
+    "relevant_chunk_ids": ["chunk_20"],
+    "document_note": "Apple Inc. Q3 2026 Form 10-Q"
+  }
+]
