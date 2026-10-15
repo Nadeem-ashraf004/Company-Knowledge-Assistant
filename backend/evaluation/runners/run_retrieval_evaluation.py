@@ -64,6 +64,7 @@ def main() -> None:
             relevant_chunk_ids=relevant_ids,
             k=EVALUATION_TOP_K,
         )
+        
 
         # Stage B: Rerank the same top-10 candidates.
         reranked_documents = rerank(
