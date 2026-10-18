@@ -123,10 +123,11 @@ def main() -> None:
 
             if values:
                 print(f"  Mean {label}: {mean(values):.4f}")
+                
             else:
                 print(f"  Mean {label}: N/A")
 
-                
+
 
 if __name__ == "__main__":
     main()
