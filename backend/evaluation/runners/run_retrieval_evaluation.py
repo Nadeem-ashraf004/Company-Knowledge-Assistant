@@ -126,7 +126,7 @@ def main() -> None:
             else:
                 print(f"  Mean {label}: N/A")
 
-
+                
 
 if __name__ == "__main__":
     main()
