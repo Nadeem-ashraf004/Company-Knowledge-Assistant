@@ -92,10 +92,28 @@ def main() -> None:
                 stages[stage_name][metric_name].append(
                     metrics[metric_name]
                 )
+                
+            print(f"Expected relevant chunks: {relevant_ids}")
 
-        print(f"Expected relevant chunks: {relevant_ids}")
-        print(f"Dense top 5:    {dense_top_5_ids}")
-        print(f"Reranked top 5: {reranked_top_5_ids}")
+            print("\nDense ranking:")
+            for rank, doc in enumerate(
+                    dense_documents, start=1
+            ):
+             payload = doc.payload or {}
+            print(
+                 f"  {rank}. chunk_id={payload.get('chunk_id')} "
+        f"dense_score={doc.score:.4f}"
+    )
+
+        print("\nReranked ranking:")
+        for rank, doc in enumerate(reranked_documents, start=1):
+                 payload = doc.get("payload", {})
+                 print(
+                    f"  {rank}. chunk_id={payload.get('chunk_id')} "
+                    f"dense_score={doc.get('score', 0):.4f} "
+                    f"rerank_score={doc.get('rerank_score', 0):.4f}"
+    )
+
 
         print("\nDense retrieval metrics:")
         print(f"  Precision@5: {dense_metrics['precision_at_k']:.4f}")
