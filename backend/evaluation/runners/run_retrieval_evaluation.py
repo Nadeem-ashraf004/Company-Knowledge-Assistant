@@ -14,7 +14,6 @@ RETRIEVAL_TOP_K = 10
 EVALUATION_TOP_K = 5
 
 
-
 def main() -> None:
     dataset = load_dataset()
 
@@ -47,13 +46,14 @@ def main() -> None:
             print("SKIPPED: No ground-truth labels.")
             continue
 
-        # Stage A: Dense retrieval from Qdrant.
+        # Stage A: Retrieve the top 10 candidates from Qdrant.
         dense_documents = retrieve(
             query=query,
             user_id=TEST_USER_ID,
             top_k=RETRIEVAL_TOP_K,
         )
 
+        # Evaluate the original dense top 5.
         dense_top_5_ids = [
             str(doc.payload["chunk_id"])
             for doc in dense_documents[:EVALUATION_TOP_K]
@@ -65,7 +65,8 @@ def main() -> None:
             relevant_chunk_ids=relevant_ids,
             k=EVALUATION_TOP_K,
         )
-        # Stage B: Rerank the same top-10 candidates.
+
+        # Stage B: Rerank the same top 10 candidates.
         reranked_documents = rerank(
             query=query,
             documents=dense_documents,
@@ -84,69 +85,87 @@ def main() -> None:
             k=EVALUATION_TOP_K,
         )
 
+        # Store metrics for the final aggregate summary.
         for stage_name, metrics in (
             ("dense_top_5", dense_metrics),
             ("reranked_top_5", reranked_metrics),
         ):
             for metric_name in stages[stage_name]:
-                stages[stage_name][metric_name].append(
-                    metrics[metric_name]
-                )
-                
-            print(f"Expected relevant chunks: {relevant_ids}")
+                value = metrics[metric_name]
+                if value is not None:
+                    stages[stage_name][metric_name].append(value)
 
-            print("\nDense ranking:")
-            for rank, doc in enumerate(
-                    dense_documents, start=1
-            ):
-             payload = doc.payload or {}
+        print(f"Expected relevant chunks: {relevant_ids}")
+
+        # Display every dense candidate, up to 10.
+        print("\nDense ranking (all retrieved candidates):")
+        for rank, doc in enumerate(dense_documents, start=1):
+            payload = doc.payload or {}
             print(
-                 f"  {rank}. chunk_id={payload.get('chunk_id')} "
-        f"dense_score={doc.score:.4f}"
-    )
+                f"  {rank}. chunk_id={payload.get('chunk_id')} "
+                f"dense_score={doc.score:.4f}"
+            )
 
+        # Display the reranked top 5.
         print("\nReranked ranking:")
         for rank, doc in enumerate(reranked_documents, start=1):
-                 payload = doc.get("payload", {})
-                 print(
-                    f"  {rank}. chunk_id={payload.get('chunk_id')} "
-                    f"dense_score={doc.get('score', 0):.4f} "
-                    f"rerank_score={doc.get('rerank_score', 0):.4f}"
-    )
-
+            payload = doc.get("payload", {})
+            print(
+                f"  {rank}. chunk_id={payload.get('chunk_id')} "
+                f"dense_score={doc.get('score', 0):.4f} "
+                f"rerank_score={doc.get('rerank_score', 0):.4f}"
+            )
 
         print("\nDense retrieval metrics:")
-        print(f"  Precision@5: {dense_metrics['precision_at_k']:.4f}")
-        print(f"  Recall@5:    {dense_metrics['recall_at_k']:.4f}")
-        print(f"  MRR@5:       {dense_metrics['mrr_at_k']:.4f}")
+        print(
+            f"  Precision@5: "
+            f"{dense_metrics['precision_at_k']:.4f}"
+        )
+        print(
+            f"  Recall@5:    "
+            f"{dense_metrics['recall_at_k']:.4f}"
+        )
+        print(
+            f"  MRR@5:       "
+            f"{dense_metrics['mrr_at_k']:.4f}"
+        )
 
         print("\nReranked metrics:")
-        print(f"  Precision@5: {reranked_metrics['precision_at_k']:.4f}")
-        print(f"  Recall@5:    {reranked_metrics['recall_at_k']:.4f}")
-        print(f"  MRR@5:       {reranked_metrics['mrr_at_k']:.4f}")
+        print(
+            f"  Precision@5: "
+            f"{reranked_metrics['precision_at_k']:.4f}"
+        )
+        print(
+            f"  Recall@5:    "
+            f"{reranked_metrics['recall_at_k']:.4f}"
+        )
+        print(
+            f"  MRR@5:       "
+            f"{reranked_metrics['mrr_at_k']:.4f}"
+        )
 
+    # This summary must be outside the test-case loop.
     print("\n" + "=" * 70)
     print("OVERALL MEAN RESULTS")
     print("=" * 70)
+
+    labels = {
+        "precision_at_k": "Precision@5",
+        "recall_at_k": "Recall@5",
+        "mrr_at_k": "MRR@5",
+    }
 
     for stage_name, metrics in stages.items():
         print(f"\n{stage_name.upper()}")
 
         for metric_name, values in metrics.items():
-            label = {
-                "precision_at_k": "Precision@5",
-                "recall_at_k": "Recall@5",
-                "mrr_at_k": "MRR@5",
-            }[metric_name]
+            label = labels[metric_name]
 
             if values:
                 print(f"  Mean {label}: {mean(values):.4f}")
-                
             else:
                 print(f"  Mean {label}: N/A")
 
 
-
 if __name__ == "__main__":
     main()
-
