@@ -1,69 +1,61 @@
 {
-  "generated_at": "2026-10-21T19:02:57.315678+00:00",
-  "configuration": {
-    "retrieval_top_k": 10,
-    "evaluation_top_k": 5
-  },
-  "dataset_summary": {
+  "generated_at": "2026-10-21T20:57:28.566981+00:00",
+  "evaluation_k": 5,
+  "retrieval_top_k": 10,
+  "total_cases": 2,
+  "dense_aggregate": {
+    "k": 5,
     "total_cases": 2,
     "labeled_cases": 2,
-    "unlabeled_cases": 0
+    "unlabeled_cases": 0,
+    "mean_precision_at_k": 0.1,
+    "mean_recall_at_k": 0.5,
+    "mean_mrr_at_k": 0.5,
+    "case_results": [
+      {
+        "id": "fiscal_year_001",
+        "precision_at_k": 0.2,
+        "recall_at_k": 1.0,
+        "mrr_at_k": 1.0,
+        "k": 5,
+        "labeled": true
+      },
+      {
+        "id": "fiscal_year_002",
+        "precision_at_k": 0.0,
+        "recall_at_k": 0.0,
+        "mrr_at_k": 0.0,
+        "k": 5,
+        "labeled": true
+      }
+    ]
   },
-  "aggregate": {
-    "dense": {
-      "k": 5,
-      "total_cases": 2,
-      "labeled_cases": 2,
-      "unlabeled_cases": 0,
-      "mean_precision_at_k": 0.1,
-      "mean_recall_at_k": 0.5,
-      "mean_mrr_at_k": 0.5,
-      "case_results": [
-        {
-          "id": "fiscal_year_001",
-          "precision_at_k": 0.2,
-          "recall_at_k": 1.0,
-          "mrr_at_k": 1.0,
-          "k": 5,
-          "labeled": true
-        },
-        {
-          "id": "fiscal_year_002",
-          "precision_at_k": 0.0,
-          "recall_at_k": 0.0,
-          "mrr_at_k": 0.0,
-          "k": 5,
-          "labeled": true
-        }
-      ]
-    },
-    "reranked": {
-      "k": 5,
-      "total_cases": 2,
-      "labeled_cases": 2,
-      "unlabeled_cases": 0,
-      "mean_precision_at_k": 0.1,
-      "mean_recall_at_k": 0.5,
-      "mean_mrr_at_k": 0.16666666666666666,
-      "case_results": [
-        {
-          "id": "fiscal_year_001",
-          "precision_at_k": 0.2,
-          "recall_at_k": 1.0,
-          "mrr_at_k": 0.3333333333333333,
-          "k": 5,
-          "labeled": true
-        },
-        {
-          "id": "fiscal_year_002",
-          "precision_at_k": 0.0,
-          "recall_at_k": 0.0,
-          "mrr_at_k": 0.0,
-          "k": 5,
-          "labeled": true
-        }
-      ]
-    }
+  "reranked_aggregate": {
+    "k": 5,
+    "total_cases": 2,
+    "labeled_cases": 2,
+    "unlabeled_cases": 0,
+    "mean_precision_at_k": 0.1,
+    "mean_recall_at_k": 0.5,
+    "mean_mrr_at_k": 0.16666666666666666,
+    "case_results": [
+      {
+        "id": "fiscal_year_001",
+        "precision_at_k": 0.2,
+        "recall_at_k": 1.0,
+        "mrr_at_k": 0.3333333333333333,
+        "k": 5,
+        "labeled": true
+      },
+      {
+        "id": "fiscal_year_002",
+        "precision_at_k": 0.0,
+        "recall_at_k": 0.0,
+        "mrr_at_k": 0.0,
+        "k": 5,
+        "labeled": true
+      }
+    ]
   },
   "cases": [
     {
@@ -78,7 +70,12 @@
           "chunk_21",
           "chunk_50",
           "chunk_37",
-          "chunk_73"
+          "chunk_73",
+          "chunk_36",
+          "chunk_76",
+          "chunk_32",
+          "chunk_75",
+          "chunk_5"
         ],
         "precision_at_k": 0.2,
         "recall_at_k": 1.0,
@@ -113,7 +110,12 @@
           "chunk_138",
           "chunk_36",
           "chunk_21",
-          "chunk_72"
+          "chunk_72",
+          "chunk_23",
+          "chunk_6",
+          "chunk_5",
+          "chunk_16",
+          "chunk_139"
         ],
         "precision_at_k": 0.0,
         "recall_at_k": 0.0,
