@@ -1,34 +1,50 @@
 
-from statistics import mean
+import json
+from datetime import datetime, timezone
+from pathlib import Path
 from uuid import UUID
 
 from app.rag.retriever import retrieve
 from app.rag.reranker import rerank
 from evaluation.dataset.loader import load_dataset
-from evaluation.evaluators.retrieval_metrics import evaluate_retrieval
+from evaluation.evaluators.retrieval_metrics import (
+    evaluate_retrieval,
+    evaluate_dataset_results,
+)
 
 
 TEST_USER_ID = UUID("c04005fd-8c22-48f9-9ddb-064acd1c724f")
-
 RETRIEVAL_TOP_K = 10
-EVALUATION_TOP_K = 5
+EVALUATION_K = 5
+
+REPORT_PATH = (
+    Path(__file__).resolve().parents[1]
+    / "reports"
+    / "retrieval_evaluation.json"
+)
+
+
+def get_chunk_ids(documents: list) -> list[str]:
+    """Extract stable chunk IDs from Qdrant payloads or reranker results."""
+    chunk_ids = []
+
+    for document in documents:
+        if isinstance(document, dict):
+            payload = document.get("payload") or {}
+        else:
+            payload = document.payload or {}
+
+        chunk_id = payload.get("chunk_id")
+
+        if chunk_id:
+            chunk_ids.append(str(chunk_id))
+
+    return chunk_ids
 
 
 def main() -> None:
     dataset = load_dataset()
-
-    stages = {
-        "dense_top_5": {
-            "precision_at_k": [],
-            "recall_at_k": [],
-            "mrr_at_k": [],
-        },
-        "reranked_top_5": {
-            "precision_at_k": [],
-            "recall_at_k": [],
-            "mrr_at_k": [],
-        },
-    }
+    case_reports = []
 
     print("=" * 70)
     print("DENSE RETRIEVAL VS RERANKING EVALUATION")
@@ -36,135 +52,119 @@ def main() -> None:
 
     for case in dataset:
         query = case["query"]
-        relevant_ids = case["relevant_chunk_ids"]
+        relevant_chunk_ids = case.get("relevant_chunk_ids", [])
 
-        print("\n" + "-" * 70)
-        print(f"Test case: {case['id']}")
+        print(f"\nCase: {case['id']}")
         print(f"Query: {query}")
+        print(f"Expected relevant chunks: {relevant_chunk_ids}")
 
-        if not relevant_ids:
-            print("SKIPPED: No ground-truth labels.")
-            continue
-
-        # Stage A: Retrieve the top 10 candidates from Qdrant.
+        # Stage 1: Dense retrieval
         dense_documents = retrieve(
             query=query,
             user_id=TEST_USER_ID,
             top_k=RETRIEVAL_TOP_K,
         )
 
-        # Evaluate the original dense top 5.
-        dense_top_5_ids = [
-            str(doc.payload["chunk_id"])
-            for doc in dense_documents[:EVALUATION_TOP_K]
-            if doc.payload and doc.payload.get("chunk_id")
-        ]
+        dense_chunk_ids = get_chunk_ids(dense_documents)
 
-        dense_metrics = evaluate_retrieval(
-            retrieved_chunk_ids=dense_top_5_ids,
-            relevant_chunk_ids=relevant_ids,
-            k=EVALUATION_TOP_K,
-        )
-
-        # Stage B: Rerank the same top 10 candidates.
+        # Stage 2: Cross-encoder reranking
         reranked_documents = rerank(
             query=query,
             documents=dense_documents,
-            top_k=EVALUATION_TOP_K,
+            top_k=EVALUATION_K,
         )
 
-        reranked_top_5_ids = [
-            str(doc["payload"]["chunk_id"])
-            for doc in reranked_documents
-            if doc.get("payload", {}).get("chunk_id")
-        ]
+        reranked_chunk_ids = get_chunk_ids(reranked_documents)
+
+        dense_metrics = evaluate_retrieval(
+            retrieved_chunk_ids=dense_chunk_ids,
+            relevant_chunk_ids=relevant_chunk_ids,
+            k=EVALUATION_K,
+        )
 
         reranked_metrics = evaluate_retrieval(
-            retrieved_chunk_ids=reranked_top_5_ids,
-            relevant_chunk_ids=relevant_ids,
-            k=EVALUATION_TOP_K,
+            retrieved_chunk_ids=reranked_chunk_ids,
+            relevant_chunk_ids=relevant_chunk_ids,
+            k=EVALUATION_K,
         )
 
-        # Store metrics for the final aggregate summary.
-        for stage_name, metrics in (
-            ("dense_top_5", dense_metrics),
-            ("reranked_top_5", reranked_metrics),
-        ):
-            for metric_name in stages[stage_name]:
-                value = metrics[metric_name]
-                if value is not None:
-                    stages[stage_name][metric_name].append(value)
-
-        print(f"Expected relevant chunks: {relevant_ids}")
-
-        # Display every dense candidate, up to 10.
-        print("\nDense ranking (all retrieved candidates):")
-        for rank, doc in enumerate(dense_documents, start=1):
-            payload = doc.payload or {}
-            print(
-                f"  {rank}. chunk_id={payload.get('chunk_id')} "
-                f"dense_score={doc.score:.4f}"
-            )
-
-        # Display the reranked top 5.
-        print("\nReranked ranking:")
-        for rank, doc in enumerate(reranked_documents, start=1):
-            payload = doc.get("payload", {})
-            print(
-                f"  {rank}. chunk_id={payload.get('chunk_id')} "
-                f"dense_score={doc.get('score', 0):.4f} "
-                f"rerank_score={doc.get('rerank_score', 0):.4f}"
-            )
-
-        print("\nDense retrieval metrics:")
+        print(f"Dense top {EVALUATION_K}: {dense_chunk_ids[:EVALUATION_K]}")
+        print(f"Reranked top {EVALUATION_K}: {reranked_chunk_ids}")
         print(
-            f"  Precision@5: "
-            f"{dense_metrics['precision_at_k']:.4f}"
+            "Dense metrics: "
+            f"P@{EVALUATION_K}={dense_metrics['precision_at_k']}, "
+            f"R@{EVALUATION_K}={dense_metrics['recall_at_k']}, "
+            f"MRR@{EVALUATION_K}={dense_metrics['mrr_at_k']}"
         )
         print(
-            f"  Recall@5:    "
-            f"{dense_metrics['recall_at_k']:.4f}"
-        )
-        print(
-            f"  MRR@5:       "
-            f"{dense_metrics['mrr_at_k']:.4f}"
+            "Reranked metrics: "
+            f"P@{EVALUATION_K}={reranked_metrics['precision_at_k']}, "
+            f"R@{EVALUATION_K}={reranked_metrics['recall_at_k']}, "
+            f"MRR@{EVALUATION_K}={reranked_metrics['mrr_at_k']}"
         )
 
-        print("\nReranked metrics:")
-        print(
-            f"  Precision@5: "
-            f"{reranked_metrics['precision_at_k']:.4f}"
-        )
-        print(
-            f"  Recall@5:    "
-            f"{reranked_metrics['recall_at_k']:.4f}"
-        )
-        print(
-            f"  MRR@5:       "
-            f"{reranked_metrics['mrr_at_k']:.4f}"
+        case_reports.append(
+            {
+                "id": case["id"],
+                "query": query,
+                "relevant_chunk_ids": relevant_chunk_ids,
+                "dense": {
+                    "retrieved_chunk_ids": dense_chunk_ids,
+                    **dense_metrics,
+                },
+                "reranked": {
+                    "retrieved_chunk_ids": reranked_chunk_ids,
+                    **reranked_metrics,
+                },
+            }
         )
 
-    # This summary must be outside the test-case loop.
-    print("\n" + "=" * 70)
-    print("OVERALL MEAN RESULTS")
-    print("=" * 70)
+    dense_aggregate = evaluate_dataset_results(
+        [
+            {
+                "id": case["id"],
+                "retrieved_chunk_ids": case["dense"]["retrieved_chunk_ids"],
+                "relevant_chunk_ids": case["relevant_chunk_ids"],
+            }
+            for case in case_reports
+        ],
+        k=EVALUATION_K,
+    )
 
-    labels = {
-        "precision_at_k": "Precision@5",
-        "recall_at_k": "Recall@5",
-        "mrr_at_k": "MRR@5",
+    reranked_aggregate = evaluate_dataset_results(
+        [
+            {
+                "id": case["id"],
+                "retrieved_chunk_ids": case["reranked"]["retrieved_chunk_ids"],
+                "relevant_chunk_ids": case["relevant_chunk_ids"],
+            }
+            for case in case_reports
+        ],
+        k=EVALUATION_K,
+    )
+
+    report = {
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "evaluation_k": EVALUATION_K,
+        "retrieval_top_k": RETRIEVAL_TOP_K,
+        "total_cases": len(dataset),
+        "dense_aggregate": dense_aggregate,
+        "reranked_aggregate": reranked_aggregate,
+        "cases": case_reports,
     }
 
-    for stage_name, metrics in stages.items():
-        print(f"\n{stage_name.upper()}")
+    REPORT_PATH.parent.mkdir(parents=True, exist_ok=True)
+    REPORT_PATH.write_text(
+        json.dumps(report, indent=2, ensure_ascii=False),
+        encoding="utf-8",
+    )
 
-        for metric_name, values in metrics.items():
-            label = labels[metric_name]
-
-            if values:
-                print(f"  Mean {label}: {mean(values):.4f}")
-            else:
-                print(f"  Mean {label}: N/A")
+    print("\n" + "=" * 70)
+    print("AGGREGATE RESULTS")
+    print("=" * 70)
+    print(f"Dense retrieval: {dense_aggregate}")
+    print(f"Reranked retrieval: {reranked_aggregate}")
+    print(f"\nReport saved to: {REPORT_PATH}")
 
 
 if __name__ == "__main__":
