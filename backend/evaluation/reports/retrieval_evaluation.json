@@ -1,16 +1,16 @@
 {
-  "generated_at": "2026-10-21T20:57:28.566981+00:00",
+  "generated_at": "2026-10-22T19:38:44.933908+00:00",
   "evaluation_k": 5,
   "retrieval_top_k": 10,
-  "total_cases": 2,
+  "total_cases": 22,
   "dense_aggregate": {
     "k": 5,
-    "total_cases": 2,
-    "labeled_cases": 2,
+    "total_cases": 22,
+    "labeled_cases": 22,
     "unlabeled_cases": 0,
-    "mean_precision_at_k": 0.1,
-    "mean_recall_at_k": 0.5,
-    "mean_mrr_at_k": 0.5,
+    "mean_precision_at_k": 0.15454545454545457,
+    "mean_recall_at_k": 0.6590909090909091,
+    "mean_mrr_at_k": 0.4257575757575758,
     "case_results": [
       {
         "id": "fiscal_year_001",
@@ -27,17 +27,177 @@
         "mrr_at_k": 0.0,
         "k": 5,
         "labeled": true
+      },
+      {
+        "id": "fiscal_year_003",
+        "precision_at_k": 0.0,
+        "recall_at_k": 0.0,
+        "mrr_at_k": 0.0,
+        "k": 5,
+        "labeled": true
+      },
+      {
+        "id": "sales_001",
+        "precision_at_k": 0.2,
+        "recall_at_k": 1.0,
+        "mrr_at_k": 0.2,
+        "k": 5,
+        "labeled": true
+      },
+      {
+        "id": "sales_002",
+        "precision_at_k": 0.2,
+        "recall_at_k": 0.5,
+        "mrr_at_k": 0.5,
+        "k": 5,
+        "labeled": true
+      },
+      {
+        "id": "sales_003",
+        "precision_at_k": 0.2,
+        "recall_at_k": 0.5,
+        "mrr_at_k": 0.25,
+        "k": 5,
+        "labeled": true
+      },
+      {
+        "id": "sales_004",
+        "precision_at_k": 0.2,
+        "recall_at_k": 0.5,
+        "mrr_at_k": 0.3333333333333333,
+        "k": 5,
+        "labeled": true
+      },
+      {
+        "id": "sales_005",
+        "precision_at_k": 0.2,
+        "recall_at_k": 1.0,
+        "mrr_at_k": 0.25,
+        "k": 5,
+        "labeled": true
+      },
+      {
+        "id": "earnings_001",
+        "precision_at_k": 0.2,
+        "recall_at_k": 1.0,
+        "mrr_at_k": 0.25,
+        "k": 5,
+        "labeled": true
+      },
+      {
+        "id": "earnings_002",
+        "precision_at_k": 0.0,
+        "recall_at_k": 0.0,
+        "mrr_at_k": 0.0,
+        "k": 5,
+        "labeled": true
+      },
+      {
+        "id": "expenses_001",
+        "precision_at_k": 0.2,
+        "recall_at_k": 1.0,
+        "mrr_at_k": 0.3333333333333333,
+        "k": 5,
+        "labeled": true
+      },
+      {
+        "id": "balance_sheet_001",
+        "precision_at_k": 0.2,
+        "recall_at_k": 1.0,
+        "mrr_at_k": 1.0,
+        "k": 5,
+        "labeled": true
+      },
+      {
+        "id": "balance_sheet_002",
+        "precision_at_k": 0.2,
+        "recall_at_k": 1.0,
+        "mrr_at_k": 0.5,
+        "k": 5,
+        "labeled": true
+      },
+      {
+        "id": "balance_sheet_003",
+        "precision_at_k": 0.2,
+        "recall_at_k": 1.0,
+        "mrr_at_k": 0.5,
+        "k": 5,
+        "labeled": true
+      },
+      {
+        "id": "balance_sheet_004",
+        "precision_at_k": 0.2,
+        "recall_at_k": 1.0,
+        "mrr_at_k": 0.25,
+        "k": 5,
+        "labeled": true
+      },
+      {
+        "id": "equity_001",
+        "precision_at_k": 0.4,
+        "recall_at_k": 1.0,
+        "mrr_at_k": 1.0,
+        "k": 5,
+        "labeled": true
+      },
+      {
+        "id": "cash_flow_001",
+        "precision_at_k": 0.2,
+        "recall_at_k": 1.0,
+        "mrr_at_k": 1.0,
+        "k": 5,
+        "labeled": true
+      },
+      {
+        "id": "cash_flow_002",
+        "precision_at_k": 0.2,
+        "recall_at_k": 1.0,
+        "mrr_at_k": 1.0,
+        "k": 5,
+        "labeled": true
+      },
+      {
+        "id": "cash_flow_003",
+        "precision_at_k": 0.2,
+        "recall_at_k": 1.0,
+        "mrr_at_k": 1.0,
+        "k": 5,
+        "labeled": true
+      },
+      {
+        "id": "expenses_002",
+        "precision_at_k": 0.0,
+        "recall_at_k": 0.0,
+        "mrr_at_k": 0.0,
+        "k": 5,
+        "labeled": true
+      },
+      {
+        "id": "capital_return_001",
+        "precision_at_k": 0.0,
+        "recall_at_k": 0.0,
+        "mrr_at_k": 0.0,
+        "k": 5,
+        "labeled": true
+      },
+      {
+        "id": "capital_return_002",
+        "precision_at_k": 0.0,
+        "recall_at_k": 0.0,
+        "mrr_at_k": 0.0,
+        "k": 5,
+        "labeled": true
       }
     ]
   },
   "reranked_aggregate": {
     "k": 5,
-    "total_cases": 2,
-    "labeled_cases": 2,
+    "total_cases": 22,
+    "labeled_cases": 22,
     "unlabeled_cases": 0,
-    "mean_precision_at_k": 0.1,
-    "mean_recall_at_k": 0.5,
-    "mean_mrr_at_k": 0.16666666666666666,
+    "mean_precision_at_k": 0.13636363636363638,
+    "mean_recall_at_k": 0.5909090909090909,
+    "mean_mrr_at_k": 0.4393939393939394,
     "case_results": [
       {
         "id": "fiscal_year_001",
@@ -49,6 +209,166 @@
       },
       {
         "id": "fiscal_year_002",
+        "precision_at_k": 0.0,
+        "recall_at_k": 0.0,
+        "mrr_at_k": 0.0,
+        "k": 5,
+        "labeled": true
+      },
+      {
+        "id": "fiscal_year_003",
+        "precision_at_k": 0.0,
+        "recall_at_k": 0.0,
+        "mrr_at_k": 0.0,
+        "k": 5,
+        "labeled": true
+      },
+      {
+        "id": "sales_001",
+        "precision_at_k": 0.2,
+        "recall_at_k": 1.0,
+        "mrr_at_k": 0.5,
+        "k": 5,
+        "labeled": true
+      },
+      {
+        "id": "sales_002",
+        "precision_at_k": 0.2,
+        "recall_at_k": 0.5,
+        "mrr_at_k": 0.3333333333333333,
+        "k": 5,
+        "labeled": true
+      },
+      {
+        "id": "sales_003",
+        "precision_at_k": 0.2,
+        "recall_at_k": 0.5,
+        "mrr_at_k": 1.0,
+        "k": 5,
+        "labeled": true
+      },
+      {
+        "id": "sales_004",
+        "precision_at_k": 0.0,
+        "recall_at_k": 0.0,
+        "mrr_at_k": 0.0,
+        "k": 5,
+        "labeled": true
+      },
+      {
+        "id": "sales_005",
+        "precision_at_k": 0.0,
+        "recall_at_k": 0.0,
+        "mrr_at_k": 0.0,
+        "k": 5,
+        "labeled": true
+      },
+      {
+        "id": "earnings_001",
+        "precision_at_k": 0.2,
+        "recall_at_k": 1.0,
+        "mrr_at_k": 0.25,
+        "k": 5,
+        "labeled": true
+      },
+      {
+        "id": "earnings_002",
+        "precision_at_k": 0.0,
+        "recall_at_k": 0.0,
+        "mrr_at_k": 0.0,
+        "k": 5,
+        "labeled": true
+      },
+      {
+        "id": "expenses_001",
+        "precision_at_k": 0.2,
+        "recall_at_k": 1.0,
+        "mrr_at_k": 0.25,
+        "k": 5,
+        "labeled": true
+      },
+      {
+        "id": "balance_sheet_001",
+        "precision_at_k": 0.2,
+        "recall_at_k": 1.0,
+        "mrr_at_k": 1.0,
+        "k": 5,
+        "labeled": true
+      },
+      {
+        "id": "balance_sheet_002",
+        "precision_at_k": 0.2,
+        "recall_at_k": 1.0,
+        "mrr_at_k": 0.5,
+        "k": 5,
+        "labeled": true
+      },
+      {
+        "id": "balance_sheet_003",
+        "precision_at_k": 0.2,
+        "recall_at_k": 1.0,
+        "mrr_at_k": 1.0,
+        "k": 5,
+        "labeled": true
+      },
+      {
+        "id": "balance_sheet_004",
+        "precision_at_k": 0.2,
+        "recall_at_k": 1.0,
+        "mrr_at_k": 1.0,
+        "k": 5,
+        "labeled": true
+      },
+      {
+        "id": "equity_001",
+        "precision_at_k": 0.4,
+        "recall_at_k": 1.0,
+        "mrr_at_k": 1.0,
+        "k": 5,
+        "labeled": true
+      },
+      {
+        "id": "cash_flow_001",
+        "precision_at_k": 0.2,
+        "recall_at_k": 1.0,
+        "mrr_at_k": 1.0,
+        "k": 5,
+        "labeled": true
+      },
+      {
+        "id": "cash_flow_002",
+        "precision_at_k": 0.2,
+        "recall_at_k": 1.0,
+        "mrr_at_k": 1.0,
+        "k": 5,
+        "labeled": true
+      },
+      {
+        "id": "cash_flow_003",
+        "precision_at_k": 0.2,
+        "recall_at_k": 1.0,
+        "mrr_at_k": 0.5,
+        "k": 5,
+        "labeled": true
+      },
+      {
+        "id": "expenses_002",
+        "precision_at_k": 0.0,
+        "recall_at_k": 0.0,
+        "mrr_at_k": 0.0,
+        "k": 5,
+        "labeled": true
+      },
+      {
+        "id": "capital_return_001",
+        "precision_at_k": 0.0,
+        "recall_at_k": 0.0,
+        "mrr_at_k": 0.0,
+        "k": 5,
+        "labeled": true
+      },
+      {
+        "id": "capital_return_002",
         "precision_at_k": 0.0,
         "recall_at_k": 0.0,
         "mrr_at_k": 0.0,
@@ -130,6 +450,810 @@
           "chunk_16",
           "chunk_72",
           "chunk_5"
+        ],
+        "precision_at_k": 0.0,
+        "recall_at_k": 0.0,
+        "mrr_at_k": 0.0,
+        "k": 5,
+        "labeled": true
+      }
+    },
+    {
+      "id": "fiscal_year_003",
+      "query": "How many weeks are in Apple's fiscal years 2026 and 2025?",
+      "relevant_chunk_ids": [
+        "chunk_20"
+      ],
+      "dense": {
+        "retrieved_chunk_ids": [
+          "chunk_36",
+          "chunk_50",
+          "chunk_21",
+          "chunk_16",
+          "chunk_72",
+          "chunk_138",
+          "chunk_6",
+          "chunk_23",
+          "chunk_43",
+          "chunk_7"
+        ],
+        "precision_at_k": 0.0,
+        "recall_at_k": 0.0,
+        "mrr_at_k": 0.0,
+        "k": 5,
+        "labeled": true
+      },
+      "reranked": {
+        "retrieved_chunk_ids": [
+          "chunk_6",
+          "chunk_21",
+          "chunk_36",
+          "chunk_16",
+          "chunk_7"
+        ],
+        "precision_at_k": 0.0,
+        "recall_at_k": 0.0,
+        "mrr_at_k": 0.0,
+        "k": 5,
+        "labeled": true
+      }
+    },
+    {
+      "id": "sales_001",
+      "query": "What were Apple's product sales for the quarter ended June 27, 2026?",
+      "relevant_chunk_ids": [
+        "chunk_6"
+      ],
+      "dense": {
+        "retrieved_chunk_ids": [
+          "chunk_62",
+          "chunk_63",
+          "chunk_21",
+          "chunk_36",
+          "chunk_6",
+          "chunk_22",
+          "chunk_16",
+          "chunk_64",
+          "chunk_10",
+          "chunk_5"
+        ],
+        "precision_at_k": 0.2,
+        "recall_at_k": 1.0,
+        "mrr_at_k": 0.2,
+        "k": 5,
+        "labeled": true
+      },
+      "reranked": {
+        "retrieved_chunk_ids": [
+          "chunk_62",
+          "chunk_6",
+          "chunk_21",
+          "chunk_36",
+          "chunk_10"
+        ],
+        "precision_at_k": 0.2,
+        "recall_at_k": 1.0,
+        "mrr_at_k": 0.5,
+        "k": 5,
+        "labeled": true
+      }
+    },
+    {
+      "id": "sales_002",
+      "query": "How much revenue did Apple Services generate in the quarter ended June 27, 2026?",
+      "relevant_chunk_ids": [
+        "chunk_6",
+        "chunk_22"
+      ],
+      "dense": {
+        "retrieved_chunk_ids": [
+          "chunk_62",
+          "chunk_22",
+          "chunk_7",
+          "chunk_16",
+          "chunk_63",
+          "chunk_36",
+          "chunk_23",
+          "chunk_6",
+          "chunk_21",
+          "chunk_8"
+        ],
+        "precision_at_k": 0.2,
+        "recall_at_k": 0.5,
+        "mrr_at_k": 0.5,
+        "k": 5,
+        "labeled": true
+      },
+      "reranked": {
+        "retrieved_chunk_ids": [
+          "chunk_8",
+          "chunk_62",
+          "chunk_22",
+          "chunk_21",
+          "chunk_36"
+        ],
+        "precision_at_k": 0.2,
+        "recall_at_k": 0.5,
+        "mrr_at_k": 0.3333333333333333,
+        "k": 5,
+        "labeled": true
+      }
+    },
+    {
+      "id": "sales_003",
+      "query": "What was Apple's total net sales in the three months ended June 27, 2026?",
+      "relevant_chunk_ids": [
+        "chunk_6",
+        "chunk_22"
+      ],
+      "dense": {
+        "retrieved_chunk_ids": [
+          "chunk_62",
+          "chunk_63",
+          "chunk_21",
+          "chunk_6",
+          "chunk_8",
+          "chunk_22",
+          "chunk_16",
+          "chunk_13",
+          "chunk_36",
+          "chunk_60"
+        ],
+        "precision_at_k": 0.2,
+        "recall_at_k": 0.5,
+        "mrr_at_k": 0.25,
+        "k": 5,
+        "labeled": true
+      },
+      "reranked": {
+        "retrieved_chunk_ids": [
+          "chunk_6",
+          "chunk_62",
+          "chunk_8",
+          "chunk_13",
+          "chunk_21"
+        ],
+        "precision_at_k": 0.2,
+        "recall_at_k": 0.5,
+        "mrr_at_k": 1.0,
+        "k": 5,
+        "labeled": true
+      }
+    },
+    {
+      "id": "sales_004",
+      "query": "What were Apple's total net sales for the first nine months of fiscal 2026?",
+      "relevant_chunk_ids": [
+        "chunk_6",
+        "chunk_22"
+      ],
+      "dense": {
+        "retrieved_chunk_ids": [
+          "chunk_63",
+          "chunk_62",
+          "chunk_6",
+          "chunk_16",
+          "chunk_21",
+          "chunk_60",
+          "chunk_22",
+          "chunk_7",
+          "chunk_64",
+          "chunk_8"
+        ],
+        "precision_at_k": 0.2,
+        "recall_at_k": 0.5,
+        "mrr_at_k": 0.3333333333333333,
+        "k": 5,
+        "labeled": true
+      },
+      "reranked": {
+        "retrieved_chunk_ids": [
+          "chunk_60",
+          "chunk_64",
+          "chunk_63",
+          "chunk_7",
+          "chunk_62"
+        ],
+        "precision_at_k": 0.0,
+        "recall_at_k": 0.0,
+        "mrr_at_k": 0.0,
+        "k": 5,
+        "labeled": true
+      }
+    },
+    {
+      "id": "sales_005",
+      "query": "How much did iPhone sales contribute during the first nine months of 2026?",
+      "relevant_chunk_ids": [
+        "chunk_22"
+      ],
+      "dense": {
+        "retrieved_chunk_ids": [
+          "chunk_63",
+          "chunk_60",
+          "chunk_62",
+          "chunk_22",
+          "chunk_21",
+          "chunk_64",
+          "chunk_6",
+          "chunk_59",
+          "chunk_16",
+          "chunk_7"
+        ],
+        "precision_at_k": 0.2,
+        "recall_at_k": 1.0,
+        "mrr_at_k": 0.25,
+        "k": 5,
+        "labeled": true
+      },
+      "reranked": {
+        "retrieved_chunk_ids": [
+          "chunk_63",
+          "chunk_60",
+          "chunk_62",
+          "chunk_59",
+          "chunk_64"
+        ],
+        "precision_at_k": 0.0,
+        "recall_at_k": 0.0,
+        "mrr_at_k": 0.0,
+        "k": 5,
+        "labeled": true
+      }
+    },
+    {
+      "id": "earnings_001",
+      "query": "What was Apple's net income for the nine months ended June 27, 2026?",
+      "relevant_chunk_ids": [
+        "chunk_6"
+      ],
+      "dense": {
+        "retrieved_chunk_ids": [
+          "chunk_16",
+          "chunk_8",
+          "chunk_62",
+          "chunk_6",
+          "chunk_13",
+          "chunk_7",
+          "chunk_47",
+          "chunk_21",
+          "chunk_63",
+          "chunk_36"
+        ],
+        "precision_at_k": 0.2,
+        "recall_at_k": 1.0,
+        "mrr_at_k": 0.25,
+        "k": 5,
+        "labeled": true
+      },
+      "reranked": {
+        "retrieved_chunk_ids": [
+          "chunk_8",
+          "chunk_16",
+          "chunk_13",
+          "chunk_6",
+          "chunk_62"
+        ],
+        "precision_at_k": 0.2,
+        "recall_at_k": 1.0,
+        "mrr_at_k": 0.25,
+        "k": 5,
+        "labeled": true
+      }
+    },
+    {
+      "id": "earnings_002",
+      "query": "What was diluted earnings per share for the first nine months of fiscal 2026?",
+      "relevant_chunk_ids": [
+        "chunk_6"
+      ],
+      "dense": {
+        "retrieved_chunk_ids": [
+          "chunk_24",
+          "chunk_7",
+          "chunk_70",
+          "chunk_69",
+          "chunk_75",
+          "chunk_13",
+          "chunk_38",
+          "chunk_33",
+          "chunk_8",
+          "chunk_16"
+        ],
+        "precision_at_k": 0.0,
+        "recall_at_k": 0.0,
+        "mrr_at_k": 0.0,
+        "k": 5,
+        "labeled": true
+      },
+      "reranked": {
+        "retrieved_chunk_ids": [
+          "chunk_24",
+          "chunk_7",
+          "chunk_75",
+          "chunk_70",
+          "chunk_69"
+        ],
+        "precision_at_k": 0.0,
+        "recall_at_k": 0.0,
+        "mrr_at_k": 0.0,
+        "k": 5,
+        "labeled": true
+      }
+    },
+    {
+      "id": "expenses_001",
+      "query": "How much did Apple spend on research and development in the quarter ended June 27, 2026?",
+      "relevant_chunk_ids": [
+        "chunk_6"
+      ],
+      "dense": {
+        "retrieved_chunk_ids": [
+          "chunk_36",
+          "chunk_7",
+          "chunk_6",
+          "chunk_16",
+          "chunk_21",
+          "chunk_62",
+          "chunk_10",
+          "chunk_8",
+          "chunk_13",
+          "chunk_5"
+        ],
+        "precision_at_k": 0.2,
+        "recall_at_k": 1.0,
+        "mrr_at_k": 0.3333333333333333,
+        "k": 5,
+        "labeled": true
+      },
+      "reranked": {
+        "retrieved_chunk_ids": [
+          "chunk_8",
+          "chunk_7",
+          "chunk_10",
+          "chunk_6",
+          "chunk_36"
+        ],
+        "precision_at_k": 0.2,
+        "recall_at_k": 1.0,
+        "mrr_at_k": 0.25,
+        "k": 5,
+        "labeled": true
+      }
+    },
+    {
+      "id": "balance_sheet_001",
+      "query": "What were Apple's total assets as of June 27, 2026?",
+      "relevant_chunk_ids": [
+        "chunk_10"
+      ],
+      "dense": {
+        "retrieved_chunk_ids": [
+          "chunk_10",
+          "chunk_36",
+          "chunk_16",
+          "chunk_6",
+          "chunk_13",
+          "chunk_8",
+          "chunk_7",
+          "chunk_43",
+          "chunk_21",
+          "chunk_5"
+        ],
+        "precision_at_k": 0.2,
+        "recall_at_k": 1.0,
+        "mrr_at_k": 1.0,
+        "k": 5,
+        "labeled": true
+      },
+      "reranked": {
+        "retrieved_chunk_ids": [
+          "chunk_10",
+          "chunk_36",
+          "chunk_16",
+          "chunk_13",
+          "chunk_8"
+        ],
+        "precision_at_k": 0.2,
+        "recall_at_k": 1.0,
+        "mrr_at_k": 1.0,
+        "k": 5,
+        "labeled": true
+      }
+    },
+    {
+      "id": "balance_sheet_002",
+      "query": "What was the value of Apple's inventories on June 27, 2026?",
+      "relevant_chunk_ids": [
+        "chunk_10"
+      ],
+      "dense": {
+        "retrieved_chunk_ids": [
+          "chunk_36",
+          "chunk_10",
+          "chunk_16",
+          "chunk_6",
+          "chunk_43",
+          "chunk_62",
+          "chunk_21",
+          "chunk_7",
+          "chunk_5",
+          "chunk_13"
+        ],
+        "precision_at_k": 0.2,
+        "recall_at_k": 1.0,
+        "mrr_at_k": 0.5,
+        "k": 5,
+        "labeled": true
+      },
+      "reranked": {
+        "retrieved_chunk_ids": [
+          "chunk_36",
+          "chunk_10",
+          "chunk_16",
+          "chunk_13",
+          "chunk_6"
+        ],
+        "precision_at_k": 0.2,
+        "recall_at_k": 1.0,
+        "mrr_at_k": 0.5,
+        "k": 5,
+        "labeled": true
+      }
+    },
+    {
+      "id": "balance_sheet_003",
+      "query": "How much were Apple's accounts receivable, net, as of June 27, 2026?",
+      "relevant_chunk_ids": [
+        "chunk_10"
+      ],
+      "dense": {
+        "retrieved_chunk_ids": [
+          "chunk_16",
+          "chunk_10",
+          "chunk_13",
+          "chunk_36",
+          "chunk_7",
+          "chunk_8",
+          "chunk_6",
+          "chunk_62",
+          "chunk_43",
+          "chunk_63"
+        ],
+        "precision_at_k": 0.2,
+        "recall_at_k": 1.0,
+        "mrr_at_k": 0.5,
+        "k": 5,
+        "labeled": true
+      },
+      "reranked": {
+        "retrieved_chunk_ids": [
+          "chunk_10",
+          "chunk_16",
+          "chunk_8",
+          "chunk_36",
+          "chunk_13"
+        ],
+        "precision_at_k": 0.2,
+        "recall_at_k": 1.0,
+        "mrr_at_k": 1.0,
+        "k": 5,
+        "labeled": true
+      }
+    },
+    {
+      "id": "balance_sheet_004",
+      "query": "What were Apple's total liabilities as of June 27, 2026?",
+      "relevant_chunk_ids": [
+        "chunk_10"
+      ],
+      "dense": {
+        "retrieved_chunk_ids": [
+          "chunk_36",
+          "chunk_43",
+          "chunk_16",
+          "chunk_10",
+          "chunk_13",
+          "chunk_6",
+          "chunk_12",
+          "chunk_8",
+          "chunk_7",
+          "chunk_138"
+        ],
+        "precision_at_k": 0.2,
+        "recall_at_k": 1.0,
+        "mrr_at_k": 0.25,
+        "k": 5,
+        "labeled": true
+      },
+      "reranked": {
+        "retrieved_chunk_ids": [
+          "chunk_10",
+          "chunk_16",
+          "chunk_8",
+          "chunk_36",
+          "chunk_13"
+        ],
+        "precision_at_k": 0.2,
+        "recall_at_k": 1.0,
+        "mrr_at_k": 1.0,
+        "k": 5,
+        "labeled": true
+      }
+    },
+    {
+      "id": "equity_001",
+      "query": "What was Apple's total shareholders' equity as of June 27, 2026?",
+      "relevant_chunk_ids": [
+        "chunk_10",
+        "chunk_13"
+      ],
+      "dense": {
+        "retrieved_chunk_ids": [
+          "chunk_13",
+          "chunk_12",
+          "chunk_36",
+          "chunk_10",
+          "chunk_7",
+          "chunk_39",
+          "chunk_8",
+          "chunk_16",
+          "chunk_6",
+          "chunk_15"
+        ],
+        "precision_at_k": 0.4,
+        "recall_at_k": 1.0,
+        "mrr_at_k": 1.0,
+        "k": 5,
+        "labeled": true
+      },
+      "reranked": {
+        "retrieved_chunk_ids": [
+          "chunk_13",
+          "chunk_10",
+          "chunk_39",
+          "chunk_12",
+          "chunk_36"
+        ],
+        "precision_at_k": 0.4,
+        "recall_at_k": 1.0,
+        "mrr_at_k": 1.0,
+        "k": 5,
+        "labeled": true
+      }
+    },
+    {
+      "id": "cash_flow_001",
+      "query": "How much cash did Apple generate from operating activities during the first nine months of 2026?",
+      "relevant_chunk_ids": [
+        "chunk_16"
+      ],
+      "dense": {
+        "retrieved_chunk_ids": [
+          "chunk_16",
+          "chunk_6",
+          "chunk_7",
+          "chunk_47",
+          "chunk_10",
+          "chunk_8",
+          "chunk_36",
+          "chunk_63",
+          "chunk_18",
+          "chunk_21"
+        ],
+        "precision_at_k": 0.2,
+        "recall_at_k": 1.0,
+        "mrr_at_k": 1.0,
+        "k": 5,
+        "labeled": true
+      },
+      "reranked": {
+        "retrieved_chunk_ids": [
+          "chunk_16",
+          "chunk_47",
+          "chunk_63",
+          "chunk_18",
+          "chunk_7"
+        ],
+        "precision_at_k": 0.2,
+        "recall_at_k": 1.0,
+        "mrr_at_k": 1.0,
+        "k": 5,
+        "labeled": true
+      }
+    },
+    {
+      "id": "cash_flow_002",
+      "query": "What was Apple's ending cash, cash equivalents, and restricted cash balance on June 27, 2026?",
+      "relevant_chunk_ids": [
+        "chunk_16"
+      ],
+      "dense": {
+        "retrieved_chunk_ids": [
+          "chunk_16",
+          "chunk_10",
+          "chunk_36",
+          "chunk_18",
+          "chunk_8",
+          "chunk_13",
+          "chunk_6",
+          "chunk_21",
+          "chunk_43",
+          "chunk_62"
+        ],
+        "precision_at_k": 0.2,
+        "recall_at_k": 1.0,
+        "mrr_at_k": 1.0,
+        "k": 5,
+        "labeled": true
+      },
+      "reranked": {
+        "retrieved_chunk_ids": [
+          "chunk_16",
+          "chunk_18",
+          "chunk_10",
+          "chunk_8",
+          "chunk_36"
+        ],
+        "precision_at_k": 0.2,
+        "recall_at_k": 1.0,
+        "mrr_at_k": 1.0,
+        "k": 5,
+        "labeled": true
+      }
+    },
+    {
+      "id": "cash_flow_003",
+      "query": "How much cash did Apple use in financing activities during the first nine months of 2026?",
+      "relevant_chunk_ids": [
+        "chunk_16"
+      ],
+      "dense": {
+        "retrieved_chunk_ids": [
+          "chunk_16",
+          "chunk_6",
+          "chunk_18",
+          "chunk_10",
+          "chunk_7",
+          "chunk_32",
+          "chunk_13",
+          "chunk_43",
+          "chunk_21",
+          "chunk_36"
+        ],
+        "precision_at_k": 0.2,
+        "recall_at_k": 1.0,
+        "mrr_at_k": 1.0,
+        "k": 5,
+        "labeled": true
+      },
+      "reranked": {
+        "retrieved_chunk_ids": [
+          "chunk_18",
+          "chunk_16",
+          "chunk_7",
+          "chunk_6",
+          "chunk_13"
+        ],
+        "precision_at_k": 0.2,
+        "recall_at_k": 1.0,
+        "mrr_at_k": 0.5,
+        "k": 5,
+        "labeled": true
+      }
+    },
+    {
+      "id": "expenses_002",
+      "query": "What were the main reasons Apple's research and development expense increased in 2026?",
+      "relevant_chunk_ids": [
+        "chunk_69"
+      ],
+      "dense": {
+        "retrieved_chunk_ids": [
+          "chunk_7",
+          "chunk_118",
+          "chunk_6",
+          "chunk_99",
+          "chunk_23",
+          "chunk_36",
+          "chunk_72",
+          "chunk_43",
+          "chunk_63",
+          "chunk_16"
+        ],
+        "precision_at_k": 0.0,
+        "recall_at_k": 0.0,
+        "mrr_at_k": 0.0,
+        "k": 5,
+        "labeled": true
+      },
+      "reranked": {
+        "retrieved_chunk_ids": [
+          "chunk_7",
+          "chunk_99",
+          "chunk_118",
+          "chunk_6",
+          "chunk_63"
+        ],
+        "precision_at_k": 0.0,
+        "recall_at_k": 0.0,
+        "mrr_at_k": 0.0,
+        "k": 5,
+        "labeled": true
+      }
+    },
+    {
+      "id": "capital_return_001",
+      "query": "How much common stock did Apple repurchase during the third quarter of 2026?",
+      "relevant_chunk_ids": [
+        "chunk_76"
+      ],
+      "dense": {
+        "retrieved_chunk_ids": [
+          "chunk_39",
+          "chunk_13",
+          "chunk_18",
+          "chunk_12",
+          "chunk_119",
+          "chunk_10",
+          "chunk_120",
+          "chunk_15",
+          "chunk_7",
+          "chunk_36"
+        ],
+        "precision_at_k": 0.0,
+        "recall_at_k": 0.0,
+        "mrr_at_k": 0.0,
+        "k": 5,
+        "labeled": true
+      },
+      "reranked": {
+        "retrieved_chunk_ids": [
+          "chunk_39",
+          "chunk_18",
+          "chunk_120",
+          "chunk_13",
+          "chunk_7"
+        ],
+        "precision_at_k": 0.0,
+        "recall_at_k": 0.0,
+        "mrr_at_k": 0.0,
+        "k": 5,
+        "labeled": true
+      }
+    },
+    {
+      "id": "capital_return_002",
+      "query": "How much did Apple pay in dividends and dividend equivalents during the third quarter of 2026?",
+      "relevant_chunk_ids": [
+        "chunk_76"
+      ],
+      "dense": {
+        "retrieved_chunk_ids": [
+          "chunk_15",
+          "chunk_13",
+          "chunk_12",
+          "chunk_8",
+          "chunk_7",
+          "chunk_10",
+          "chunk_16",
+          "chunk_18",
+          "chunk_47",
+          "chunk_36"
+        ],
+        "precision_at_k": 0.0,
+        "recall_at_k": 0.0,
+        "mrr_at_k": 0.0,
+        "k": 5,
+        "labeled": true
+      },
+      "reranked": {
+        "retrieved_chunk_ids": [
+          "chunk_15",
+          "chunk_18",
+          "chunk_7",
+          "chunk_47",
+          "chunk_12"
         ],
         "precision_at_k": 0.0,
         "recall_at_k": 0.0,

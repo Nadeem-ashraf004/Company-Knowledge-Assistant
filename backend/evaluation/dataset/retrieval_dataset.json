@@ -1,17 +1,204 @@
-
 [
   {
     "id": "fiscal_year_001",
     "query": "What is the company's fiscal year?",
     "expected_answer": "The fiscal year is a 52- or 53-week period ending on the last Saturday of September.",
-    "relevant_chunk_ids": ["chunk_20"],
+    "relevant_chunk_ids": [
+      "chunk_20"
+    ],
     "document_note": "Apple Inc. Q3 2026 Form 10-Q"
   },
   {
     "id": "fiscal_year_002",
     "query": "When does Apple's fiscal year end?",
     "expected_answer": "Apple's fiscal year ends on the last Saturday of September.",
-    "relevant_chunk_ids": ["chunk_20"],
+    "relevant_chunk_ids": [
+      "chunk_20"
+    ],
+    "document_note": "Apple Inc. Q3 2026 Form 10-Q"
+  },
+  {
+    "id": "fiscal_year_003",
+    "query": "How many weeks are in Apple's fiscal years 2026 and 2025?",
+    "expected_answer": "Apple's fiscal years 2026 and 2025 each span 52 weeks.",
+    "relevant_chunk_ids": [
+      "chunk_20"
+    ],
+    "document_note": "Apple Inc. Q3 2026 Form 10-Q"
+  },
+  {
+    "id": "sales_001",
+    "query": "What were Apple's product sales for the quarter ended June 27, 2026?",
+    "expected_answer": "Product net sales were $78.678 billion for the three months ended June 27, 2026.",
+    "relevant_chunk_ids": [
+      "chunk_6"
+    ],
+    "document_note": "Apple Inc. Q3 2026 Form 10-Q"
+  },
+  {
+    "id": "sales_002",
+    "query": "How much revenue did Apple Services generate in the quarter ended June 27, 2026?",
+    "expected_answer": "Services net sales were $30.739 billion for the three months ended June 27, 2026.",
+    "relevant_chunk_ids": [
+      "chunk_6",
+      "chunk_22"
+    ],
+    "document_note": "Apple Inc. Q3 2026 Form 10-Q"
+  },
+  {
+    "id": "sales_003",
+    "query": "What was Apple's total net sales in the three months ended June 27, 2026?",
+    "expected_answer": "Total net sales were $109.417 billion.",
+    "relevant_chunk_ids": [
+      "chunk_6",
+      "chunk_22"
+    ],
+    "document_note": "Apple Inc. Q3 2026 Form 10-Q"
+  },
+  {
+    "id": "sales_004",
+    "query": "What were Apple's total net sales for the first nine months of fiscal 2026?",
+    "expected_answer": "Total net sales for the nine months ended June 27, 2026 were $364.357 billion.",
+    "relevant_chunk_ids": [
+      "chunk_6",
+      "chunk_22"
+    ],
+    "document_note": "Apple Inc. Q3 2026 Form 10-Q"
+  },
+  {
+    "id": "sales_005",
+    "query": "How much did iPhone sales contribute during the first nine months of 2026?",
+    "expected_answer": "iPhone net sales were $196.515 billion for the nine months ended June 27, 2026.",
+    "relevant_chunk_ids": [
+      "chunk_22"
+    ],
+    "document_note": "Apple Inc. Q3 2026 Form 10-Q"
+  },
+  {
+    "id": "earnings_001",
+    "query": "What was Apple's net income for the nine months ended June 27, 2026?",
+    "expected_answer": "Net income was $101.464 billion for the nine months ended June 27, 2026.",
+    "relevant_chunk_ids": [
+      "chunk_6"
+    ],
+    "document_note": "Apple Inc. Q3 2026 Form 10-Q"
+  },
+  {
+    "id": "earnings_002",
+    "query": "What was diluted earnings per share for the first nine months of fiscal 2026?",
+    "expected_answer": "Diluted earnings per share were $6.88 for the nine months ended June 27, 2026.",
+    "relevant_chunk_ids": [
+      "chunk_6"
+    ],
+    "document_note": "Apple Inc. Q3 2026 Form 10-Q"
+  },
+  {
+    "id": "expenses_001",
+    "query": "How much did Apple spend on research and development in the quarter ended June 27, 2026?",
+    "expected_answer": "Research and development expense was $11.729 billion for the three months ended June 27, 2026.",
+    "relevant_chunk_ids": [
+      "chunk_6"
+    ],
+    "document_note": "Apple Inc. Q3 2026 Form 10-Q"
+  },
+  {
+    "id": "balance_sheet_001",
+    "query": "What were Apple's total assets as of June 27, 2026?",
+    "expected_answer": "Total assets were $383.266 billion as of June 27, 2026.",
+    "relevant_chunk_ids": [
+      "chunk_10"
+    ],
+    "document_note": "Apple Inc. Q3 2026 Form 10-Q"
+  },
+  {
+    "id": "balance_sheet_002",
+    "query": "What was the value of Apple's inventories on June 27, 2026?",
+    "expected_answer": "Inventories totaled $11.092 billion as of June 27, 2026.",
+    "relevant_chunk_ids": [
+      "chunk_10"
+    ],
+    "document_note": "Apple Inc. Q3 2026 Form 10-Q"
+  },
+  {
+    "id": "balance_sheet_003",
+    "query": "How much were Apple's accounts receivable, net, as of June 27, 2026?",
+    "expected_answer": "Accounts receivable, net, were $31.398 billion as of June 27, 2026.",
+    "relevant_chunk_ids": [
+      "chunk_10"
+    ],
+    "document_note": "Apple Inc. Q3 2026 Form 10-Q"
+  },
+  {
+    "id": "balance_sheet_004",
+    "query": "What were Apple's total liabilities as of June 27, 2026?",
+    "expected_answer": "Total liabilities were $275.746 billion as of June 27, 2026.",
+    "relevant_chunk_ids": [
+      "chunk_10"
+    ],
+    "document_note": "Apple Inc. Q3 2026 Form 10-Q"
+  },
+  {
+    "id": "equity_001",
+    "query": "What was Apple's total shareholders' equity as of June 27, 2026?",
+    "expected_answer": "Total shareholders' equity was $107.520 billion as of June 27, 2026.",
+    "relevant_chunk_ids": [
+      "chunk_10",
+      "chunk_13"
+    ],
+    "document_note": "Apple Inc. Q3 2026 Form 10-Q"
+  },
+  {
+    "id": "cash_flow_001",
+    "query": "How much cash did Apple generate from operating activities during the first nine months of 2026?",
+    "expected_answer": "Apple generated $116.996 billion in cash from operating activities for the nine months ended June 27, 2026.",
+    "relevant_chunk_ids": [
+      "chunk_16"
+    ],
+    "document_note": "Apple Inc. Q3 2026 Form 10-Q"
+  },
+  {
+    "id": "cash_flow_002",
+    "query": "What was Apple's ending cash, cash equivalents, and restricted cash balance on June 27, 2026?",
+    "expected_answer": "The ending balance was $39.544 billion as of June 27, 2026.",
+    "relevant_chunk_ids": [
+      "chunk_16"
+    ],
+    "document_note": "Apple Inc. Q3 2026 Form 10-Q"
+  },
+  {
+    "id": "cash_flow_003",
+    "query": "How much cash did Apple use in financing activities during the first nine months of 2026?",
+    "expected_answer": "Apple used $94.575 billion in cash for financing activities for the nine months ended June 27, 2026.",
+    "relevant_chunk_ids": [
+      "chunk_16"
+    ],
+    "document_note": "Apple Inc. Q3 2026 Form 10-Q"
+  },
+  {
+    "id": "expenses_002",
+    "query": "What were the main reasons Apple's research and development expense increased in 2026?",
+    "expected_answer": "Research and development expense increased primarily because of higher infrastructure-related costs, including investments in artificial intelligence, and headcount-related expenses.",
+    "relevant_chunk_ids": [
+      "chunk_69"
+    ],
+    "document_note": "Apple Inc. Q3 2026 Form 10-Q"
+  },
+  {
+    "id": "capital_return_001",
+    "query": "How much common stock did Apple repurchase during the third quarter of 2026?",
+    "expected_answer": "Apple repurchased $25.8 billion of its common stock during the third quarter of 2026.",
+    "relevant_chunk_ids": [
+      "chunk_76"
+    ],
+    "document_note": "Apple Inc. Q3 2026 Form 10-Q"
+  },
+  {
+    "id": "capital_return_002",
+    "query": "How much did Apple pay in dividends and dividend equivalents during the third quarter of 2026?",
+    "expected_answer": "Apple paid $4.0 billion in dividends and dividend equivalents during the third quarter of 2026.",
+    "relevant_chunk_ids": [
+      "chunk_76"
+    ],
     "document_note": "Apple Inc. Q3 2026 Form 10-Q"
   }
 ]

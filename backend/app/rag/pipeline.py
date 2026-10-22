@@ -52,79 +52,65 @@ def run_rag_pipeline(
         query=rewritten_query,
         user_id=user_id,
         top_k=retrieval_top_k,
-    )
+    )            
     
-    # DEBUG : inspect retreviel documents
-    print("\n" + "=" * 80)
-    print("Debug inspect retreiveil document")
-    print("=" * 80)
-    for rank , document in enumerate(
-         retrieved_documents,
-         start=1,
-    ):
-         payload = document.payload or  {}
-         print(f"\n[Retreivel # {rank}]")
-         print(" ID :", document.id)
-         print("Vector Score :",document.score)
-         print("document id :",payload.get("document_id"))
-         print("File :",payload.get("file_name"))
-         print("page" ,payload.get("page"))
-         print("Chunk :", payload.get("chunk_id"))
-         print("Text:", payload.get("text","")[:1000])               
-         
-
     # 3. Rerank retrieved documents
     ranked_documents = rerank(
         query=rewritten_query,
         documents=retrieved_documents,
         top_k=rerank_top_k,
     )
-    #reranking document debug 
-    print("\n" + "=" * 80)
-    print("document reranking chack ")
-    print("=" * 80)
-
-    for rank, document in enumerate(
-         ranked_documents,
-         start =1,
-    ):
-      payload = document.get("payload", {})
-
-      print(f"\n[RERANK #{rank}]")
-      print("ID:", document.get("id"))
-      print("Vector Score:", document.get("score"))
-      print("Rerank Score:", document.get("rerank_score"))
-      print("Document ID:", payload.get("document_id"))
-      print("File:", payload.get("file_name"))
-      print("Page:", payload.get("page"))
-      print("Chunk:", payload.get("chunk_id"))
-      print("Text:", payload.get("text", "")[:1000])
-
 
 
     # 4. Build context from ranked documents
+    
+    # 4. Build source-labelled context
     context_parts = []
 
     for document in ranked_documents:
         payload = document.get("payload", {})
-        text = payload.get("text", "")
+        text = (payload.get("text") or "").strip()
 
-        if text:
-            context_parts.append(text)
+        if not text:
+            continue
+
+        file_name = payload.get("file_name") or "Unknown document"
+        page = payload.get("page")
+
+        source = f"Source: {file_name}"
+        if page is not None:
+            source += f", page {page}"
+
+        context_parts.append(
+            f"[{source}]\n{text}"
+        )
 
     context = "\n\n".join(context_parts)
 
-    # 5. Build the RAG prompt
+    # 5. Abstain if retrieval produced no usable text
+    if not context:
+        return {
+            "query": rewritten_query,
+            "answer": (
+                "I couldn't find enough information in the "
+                "available documents to answer that reliably."
+            ),
+            "documents": ranked_documents,
+            "intent": intent,
+        }
+
+    # 6. Build the grounded prompt
     prompt = build_rag_prompt(
         question=rewritten_query,
         context=context,
     )
 
-    # 6. Generate answer using Gemini
+    # 7. Generate answer using Gemini
     answer = generate_answer(prompt)
 
     return {
         "query": rewritten_query,
         "answer": answer,
         "documents": ranked_documents,
+        "intent": intent,
     }
