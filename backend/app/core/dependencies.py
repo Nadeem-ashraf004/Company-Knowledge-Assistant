@@ -18,8 +18,6 @@ def get_current_user(
 ) -> User:
     # return the current authentication user .
     token = credentials.credentials
-    print("debug the token " , bool(token))
-    print("debug token length " ,len(token))
     # decode the token and get the user id
     payload = decode_access_token(token)
 
@@ -61,7 +59,7 @@ def get_current_user(
     #prevent inactive users the api
     if not user.is_active:
         raise HTTPException(
-            status_code=status.HTTP_402_PAYMENT_REQUIRED,
+            status_code=status.HTTP_403_FORBIDDEN,
             detail="user account is inactive",
             headers={"WWW-Authentication":"Bearer"},
         )

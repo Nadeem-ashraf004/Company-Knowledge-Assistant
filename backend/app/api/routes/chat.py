@@ -15,6 +15,9 @@ from app.services.chat_service import (
     get_conversation_messages,
 )
 from app.rag.pipeline import run_rag_pipeline
+import logging
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
@@ -66,6 +69,7 @@ async def chat(
         messages = get_conversation_messages(
             db=db,
             conversation_id=conversation.id,
+            user_id=user_id,
         )
 
         conversation_history = [
@@ -81,12 +85,32 @@ async def chat(
         ]
 
         # Save the current user's message.
-        add_message(
+        saved_user_massage = add_message(
             db=db,
             conversation_id=conversation.id,
+            user_id= user_id,
             role=MessageRole.USER,
             content=query,
         )
+        if saved_user_massage is None:
+            raise HTTPException(
+                status_code= 404,
+                detail="Conversation not found .",
+            )
+        saved_assistant_message = add_message(
+            db=db,
+            conversation_id=conversation.id,
+            user_id=user_id,
+            role=MessageRole.ASSISTANT,
+            content=result["answer"],
+            citations=citations,
+        )
+
+        if saved_assistant_message is None:
+            raise HTTPException(
+                status_code=404,
+                detail="Conversation not found.",
+            )
 
         # Run the RAG pipeline using the previous conversation history.
         result = run_rag_pipeline(
@@ -130,8 +154,9 @@ async def chat(
     except HTTPException:
         raise
 
-    except Exception as exc:
+    except Exception:
+        logger.exception("Chat request failed")
         raise HTTPException(
             status_code=500,
-            detail=str(exc),
+            detail="An internal error occurred while processing your question.",
         )

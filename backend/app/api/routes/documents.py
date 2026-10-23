@@ -1,8 +1,10 @@
+import logging
 from pathlib import Path
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile
 from sqlalchemy.orm import Session
+
 from app.core.dependencies import get_current_user
 from app.db.database import get_db
 from app.models.document import DocumentStatus
@@ -15,10 +17,15 @@ from app.services.document_service import (
     update_document_status,
 )
 
-router = APIRouter()    
+logger = logging.getLogger(__name__)
+
+router = APIRouter()
 
 UPLOAD_DIR = Path("uploads")
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+
+MAX_UPLOAD_SIZE = 25 * 1024 * 1024  # 25 MB
+UPLOAD_CHUNK_SIZE = 1024 * 1024  # 1 MB
 
 ALLOWED_EXTENSIONS = {
     ".pdf",
@@ -32,12 +39,10 @@ ALLOWED_EXTENSIONS = {
 async def upload_document(
     file: UploadFile = File(...),
     description: str | None = Form(None),
-    current_user : User = Depends(get_current_user),
+    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-    """
-    Upload a document, store its metadata, and ingest it into Qdrant.
-    """
+    """Upload a document, store its metadata, and ingest it into Qdrant."""
 
     if not file.filename:
         raise HTTPException(
@@ -55,14 +60,17 @@ async def upload_document(
                 f"Allowed types: {', '.join(sorted(ALLOWED_EXTENSIONS))}"
             ),
         )
+
     user_id = current_user.id
+    document = None
+    file_path = None
 
     try:
-        # Create a PostgreSQL document record.
+        # Create the database record.
         document = create_document(
             db=db,
             user_id=user_id,
-            filename=file.filename,
+            filename=Path(file.filename).name,
             file_type=extension,
             description=description,
         )
@@ -73,16 +81,33 @@ async def upload_document(
 
         file_path = user_upload_dir / f"{document.id}{extension}"
 
-        # Save uploaded file.
-        contents = await file.read()
-        file_path.write_bytes(contents)
+        # Save the file in chunks to avoid reading the entire
+        # upload into memory at once.
+        total_size = 0
 
-        # Store the file path.
+        with file_path.open("wb") as destination:
+            while True:
+                chunk = await file.read(UPLOAD_CHUNK_SIZE)
+
+                if not chunk:
+                    break
+
+                total_size += len(chunk)
+
+                if total_size > MAX_UPLOAD_SIZE:
+                    raise HTTPException(
+                        status_code=413,
+                        detail="File is too large. Maximum upload size is 25 MB.",
+                    )
+
+                destination.write(chunk)
+
+        # Save the file path in the database.
         document.file_path = str(file_path)
         db.commit()
         db.refresh(document)
 
-        # Mark document as processing.
+        # Mark the document as processing.
         update_document_status(
             db=db,
             document=document,
@@ -94,10 +119,10 @@ async def upload_document(
             file_path=str(file_path),
             user_id=user_id,
             document_id=document.id,
-            original_filename=file.filename,
+            original_filename=Path(file.filename).name,
         )
 
-        # Mark document as completed.
+        # Mark the document as completed.
         update_document_status(
             db=db,
             document=document,
@@ -109,37 +134,68 @@ async def upload_document(
             "document_id": str(document.id),
             "filename": document.filename,
             "file_type": document.file_type,
-            "status":(
-                 document.status.value 
-                 if hasattr(document.status,"value") 
-                 else document.status
-                 ),
+            "status": (
+                document.status.value
+                if hasattr(document.status, "value")
+                else document.status
+            ),
             "chunks_created": result["chunks_created"],
         }
 
     except HTTPException:
+        # Clean up partial files and mark any created record as failed.
+        if file_path is not None:
+            try:
+                file_path.unlink(missing_ok=True)
+            except OSError:
+                logger.exception("Failed to remove incomplete upload")
+
+        if document is not None:
+            try:
+                update_document_status(
+                    db=db,
+                    document=document,
+                    status=DocumentStatus.FAILED,
+                )
+            except Exception:
+                logger.exception("Failed to update document status")
+
         raise
 
-    except Exception as exc:
-        if "document" in locals():
-            update_document_status(
-                db=db,
-                document=document,
-                status=DocumentStatus.FAILED,
-            )
+    except Exception:
+        logger.exception("Document upload or ingestion failed")
+
+        if file_path is not None:
+            try:
+                file_path.unlink(missing_ok=True)
+            except OSError:
+                logger.exception("Failed to remove uploaded file after error")
+
+        if document is not None:
+            try:
+                update_document_status(
+                    db=db,
+                    document=document,
+                    status=DocumentStatus.FAILED,
+                )
+            except Exception:
+                logger.exception("Failed to update document status")
 
         raise HTTPException(
             status_code=500,
-            detail=str(exc),
+            detail="Document upload or processing failed. Please try again.",
         )
+
+    finally:
+        await file.close()
 
 
 @router.get("/")
 async def list_documents(
-    current_user:  User = Depends(get_current_user) ,
+    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-    """List all documents belonging to a user."""
+    """List all documents belonging to the current user."""
 
     documents = get_user_documents(
         db=db,
@@ -151,7 +207,11 @@ async def list_documents(
             "document_id": str(document.id),
             "filename": document.filename,
             "file_type": document.file_type,
-            "status": document.status.value,
+            "status": (
+                document.status.value
+                if hasattr(document.status, "value")
+                else document.status
+            ),
             "chunk_count": document.chunk_count,
             "created_at": document.created_at,
         }
@@ -165,7 +225,7 @@ async def get_document_details(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-    """Get details of a user's document."""
+    """Get details of a document owned by the current user."""
 
     document = get_document(
         db=db,
@@ -183,7 +243,11 @@ async def get_document_details(
         "document_id": str(document.id),
         "filename": document.filename,
         "file_type": document.file_type,
-        "status": document.status.value,
+        "status": (
+            document.status.value
+            if hasattr(document.status, "value")
+            else document.status
+        ),
         "chunk_count": document.chunk_count,
         "description": document.description,
         "created_at": document.created_at,

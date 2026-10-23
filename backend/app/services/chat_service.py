@@ -44,12 +44,21 @@ def get_conversation(
 def add_message(
     db: Session,
     conversation_id: UUID,
+    user_id: UUID,
     role: MessageRole,
     content: str,
     citations: list | None = None,
     token_count: int | None = None,
-) -> Message:
-    """Add a message to a conversation."""
+) -> Message | None:
+    """Add a message only to a conversation owned  by the user ."""
+    conversation = get_conversation(
+        db=db,
+        conversation_id=conversation_id,
+        user_id=user_id,
+    )
+
+    if conversation is None:
+        return None
 
     message = Message(
         conversation_id=conversation_id,
@@ -69,12 +78,19 @@ def add_message(
 def get_conversation_messages(
     db: Session,
     conversation_id: UUID,
+    user_id : UUID,
 ) -> list[Message]:
-    """Get messages for a conversation."""
+    """retrieve messages only form a conversation owned by the user."""
 
     statement = (
         select(Message)
-        .where(Message.conversation_id == conversation_id)
+        .join(
+            Conversation,
+            Message.conversation_id == Conversation.id,
+        )
+        .where(
+            Conversation.id == conversation_id,
+            Conversation.user_id == user_id)
         .order_by(Message.created_at.asc())
     )
 
