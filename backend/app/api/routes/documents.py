@@ -34,6 +34,7 @@ ALLOWED_EXTENSIONS = {
     ".csv",
 }
 
+
 @router.post("/upload")
 async def upload_document(
     file: UploadFile = File(...),
