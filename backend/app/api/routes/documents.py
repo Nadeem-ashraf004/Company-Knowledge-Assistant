@@ -19,6 +19,7 @@ from app.services.document_service import (
 
 logger = logging.getLogger(__name__)
 
+
 router = APIRouter()
 
 UPLOAD_DIR = Path("uploads")
