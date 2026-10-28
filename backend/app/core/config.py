@@ -1,5 +1,7 @@
+
 from functools import lru_cache
 
+from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -7,12 +9,12 @@ class Settings(BaseSettings):
     # Application
     APP_NAME: str = "Company Knowledge Assistant"
     APP_VERSION: str = "1.0.0"
-    DEBUG: bool = True
+    DEBUG: bool = False
 
     # API
     API_PREFIX: str = "/api"
 
-   # PostgreSQL
+    # PostgreSQL
     DATABASE_URL: str = (
         "postgresql+psycopg://postgres:password@localhost:5432/company_knowledge"
     )
@@ -32,11 +34,11 @@ class Settings(BaseSettings):
     RERANKER_MODEL: str = "BAAI/bge-reranker-base"
 
     # Authentication
-    SECRET_KEY: str = "change-this-secret-key"
+    SECRET_KEY: str = Field(min_length=32)
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
 
-    # Redis
-    REDIS_URL: str = "redis://localhost:6379/0"
+    # Redis (optional unless used by application code)
+    REDIS_URL: str | None = None
 
     model_config = SettingsConfigDict(
         env_file=".env",
