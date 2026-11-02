@@ -97,28 +97,12 @@ async def chat(
                 status_code= 404,
                 detail="Conversation not found .",
             )
-        saved_assistant_message = add_message(
-            db=db,
-            conversation_id=conversation.id,
-            user_id=user_id,
-            role=MessageRole.ASSISTANT,
-            content=result["answer"],
-            citations=citations,
-        )
-
-        if saved_assistant_message is None:
-            raise HTTPException(
-                status_code=404,
-                detail="Conversation not found.",
-            )
-
-        # Run the RAG pipeline using the previous conversation history.
+        # 2. Run RAG with the previous conversation history.
         result = run_rag_pipeline(
             query=query,
             user_id=user_id,
             conversation_history=conversation_history,
         )
-
         # Extract citation information.
         citations = []
 
@@ -134,16 +118,21 @@ async def chat(
                     "score": document.get("rerank_score"),
                 }
             )
+            # 4. Save the assistant's response once.
+            saved_assistant_message = add_message(
+                db=db,
+                conversation_id=conversation.id,
+                user_id=user_id,
+                role=MessageRole.ASSISTANT,
+                content=result["answer"],
+                citations=citations,
+            )
 
-        # Save the assistant's response.
-        add_message(
-            db=db,
-            conversation_id=conversation.id,
-            role=MessageRole.ASSISTANT,
-            content=result["answer"],
-            citations=citations,
-        )
-
+            if saved_assistant_message is None:
+                raise HTTPException(
+                status_code=404,
+                detail="Conversation not found.",
+            )
         return {
             "conversation_id": str(conversation.id),
             "query": result["query"],

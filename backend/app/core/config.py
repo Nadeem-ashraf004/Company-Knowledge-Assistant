@@ -14,6 +14,9 @@ class Settings(BaseSettings):
     # API
     API_PREFIX: str = "/api"
 
+    # CORS
+    CORS_ORIGINS: list[str] = ["http://localhost:5173"]
+
     # PostgreSQL
     DATABASE_URL: str = (
         "postgresql+psycopg://postgres:password@localhost:5432/company_knowledge"

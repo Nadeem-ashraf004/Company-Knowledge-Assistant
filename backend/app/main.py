@@ -1,5 +1,7 @@
+from deepeval import settings
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from app.core.config import settings
 
 from app.api.routes import auth, documents, chat, health
 
@@ -15,10 +17,10 @@ init_db()
 # CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # We will restrict this later
+    allow_origins=settings.CORS_ORIGINS,
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allow_headers=["Authorization", "Content-Type"],
 )
 
 

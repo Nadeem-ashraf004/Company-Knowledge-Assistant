@@ -6,7 +6,6 @@ from pydantic import(
      ConfigDict, 
      EmailStr, 
      Field ,
-     field_validator , 
      model_validator
 )
 
@@ -18,7 +17,7 @@ class UserCreate(BaseModel):
         min_length=8, 
         max_length=128
         )
-    confrim_password : str =Field(
+    confirm_password : str =Field(
         min_length=8, 
         max_length=128
         )
@@ -43,7 +42,7 @@ class UserCreate(BaseModel):
             raise ValueError(
                 "password must have atleast one digit..."
                 )
-        if self.password != self.confrim_password:
+        if self.password != self.confirm_password:
             raise ValueError(
                 "password and confirm are not match"
                 )

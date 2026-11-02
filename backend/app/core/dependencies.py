@@ -1,5 +1,5 @@
 from uuid import UUID
-from fastapi import Depends , HTTPException, HTTPException , status
+from fastapi import Depends , HTTPException , status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from sqlalchemy.orm import Session
 from app.core.security import decode_access_token, verify_password
@@ -10,16 +10,21 @@ from app.models.user import User
 
 #extract the token from thr authorization header
 #authorization header is in the formate : baerer <token>
-security = HTTPBearer()
+security = HTTPBearer(auto_error=True)
 
 def get_current_user(
-        credentials: HTTPAuthorizationCredentials = Depends(security),
+        credentials: HTTPAuthorizationCredentials | None = Depends(security),
         db: Session = Depends(get_db),
 ) -> User:
-    # return the current authentication user .
-    token = credentials.credentials
+    #  Authenticate the request and return the current active user .
+    if credentials is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Authentication credentials were not provided",
+            headers={"WWW-Authentication":"Bearer"},
+        )
     # decode the token and get the user id
-    payload = decode_access_token(token)
+    payload = decode_access_token(credentials.credentials)
 
     if not payload:
         raise HTTPException(
@@ -42,7 +47,7 @@ def get_current_user(
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="invalid token subject",
-            headers={"WWW-authentication":"Bearer"},
+            headers={"WWW-Authentication":"Bearer"},
         )   
     #load the user from the postgres database using the user id
     user = get_user_by_id(
@@ -50,11 +55,11 @@ def get_current_user(
         user_id=user_id,
     )
 
-    if not user:
+    if user is None:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail='user not found',
-            headers={"WWW-Authentiocation":"Bearer"},
+            headers={"WWW-Authentication":"Bearer"},
         )
     #prevent inactive users the api
     if not user.is_active:
