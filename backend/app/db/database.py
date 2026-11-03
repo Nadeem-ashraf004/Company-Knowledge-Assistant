@@ -34,9 +34,4 @@ def get_db() -> Generator[Session, None, None]:
         yield db
     finally:
         db.close()
-
-
-def init_db() -> None:
-    """Create all database tables."""
-
-    Base.metadata.create_all(bind=engine)
+        
