@@ -1,10 +1,12 @@
-from deepeval import settings
 from fastapi import FastAPI
+import time
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
+from app.core.logging import logger , setup_logging
 
 from app.api.routes import auth, documents, chat, health
 
+setup_logging()
 
 app = FastAPI(
     title="Company Knowledge Assistant",
@@ -12,6 +14,30 @@ app = FastAPI(
     version="1.0.0",
 )
 
+# request logging middleware 
+@app.middleware("http")
+async def log_requests(request, call_next):
+    start_time = logger.now()
+
+    try:
+        response = await call_next(request)
+
+    except Exception :
+        logger.exception(
+            "Unhandled axception occurred while processing request | method=%s path=%s ",
+            request.method,
+            request.url.path,
+        ) 
+        raise
+    duration_ms = (time.pref_counter() - start_time) * 1000
+
+    logger.info(
+        "HTTP request | method=%s path=%s duration=%.2f ms",
+        request.method,
+        request.url.path,
+        duration_ms
+    )
+    return response
 # CORS
 app.add_middleware(
     CORSMiddleware,
