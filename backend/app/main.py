@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 import time
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
@@ -16,20 +16,20 @@ app = FastAPI(
 
 # request logging middleware 
 @app.middleware("http")
-async def log_requests(request, call_next):
-    start_time = logger.now()
+async def log_requests(request:Request, call_next):
+    start_time = time.perf_counter()
 
     try:
         response = await call_next(request)
 
     except Exception :
         logger.exception(
-            "Unhandled axception occurred while processing request | method=%s path=%s ",
+            "Unhandled exception occurred while processing request | method=%s path=%s ",
             request.method,
             request.url.path,
         ) 
         raise
-    duration_ms = (time.pref_counter() - start_time) * 1000
+    duration_ms = (time.perf_counter() - start_time) * 1000
 
     logger.info(
         "HTTP request | method=%s path=%s duration=%.2f ms",
