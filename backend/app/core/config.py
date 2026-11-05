@@ -23,6 +23,10 @@ class Settings(BaseSettings):
     DATABASE_URL: str = (
         "postgresql+psycopg://postgres:password@localhost:5432/company_knowledge"
     )
+    DB_POOL_SIZE: int = 5
+    DB_MAX_OVERFLOW: int = 5
+    DB_POOL_TIMEOUT: int = 30
+    DB_POOL_RECYCLE: int = 1800
 
     # Qdrant
     QDRANT_URL: str = "http://localhost:6333"
